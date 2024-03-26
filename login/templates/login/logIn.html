@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Log In Form</title>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'login/style.css' %}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <script src="logIn.js" defer type="module"></script>
+</head>
+<body id="body-login">
+
+      <div class="Container">
+        <h2>Log In</h2>
+        <h5>Continue your journey!</h5>
+            <div class="Form_container"> 
+                <form>
+                 <div id="username">
+                    <span>
+                        <i class="fa fa-user"></i>
+                    </span>
+                    <input id="Uname" type="text" name="Uname" placeholder="Username">
+                 </div>
+              
+                <div id="password">
+                    <span>
+                        <i class="fa fa-key"></i>
+                    </span>
+                    <input id="Pword" type="text" name="Pname" placeholder="Password" > 
+                </div>
+                
+                 <a href="#" id="forget_password">Forgot Password?</a><br>
+                 
+                 <h5>OR</h5>
+
+                 <div id="google-signin">
+                    <button id="google-button">
+                        <img id="google-icon" src="google icon.svg" height="18px" width="18px">
+                         Sign In With Google
+                    </button>
+                    
+                    
+                 </div>
+
+    
+                <input id="submit" type="submit" value="Log In" >
+
+               </form>
+            </div>
+       </div>
+       
+</body>
+</html>
