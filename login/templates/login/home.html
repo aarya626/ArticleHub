@@ -1,0 +1,118 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Home Page</title>
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font- 
+      awesome/6.5.1/css/all.min.css">
+
+      <link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inknut+Antiqua:wght@300;400;500;600;700;800;900&family=Italiana&family=Source+Code+Pro:ital,wght@0,200..900;1,200..900&display=swap" rel="stylesheet">
+
+      <link rel="preconnect" href="https://fonts.googleapis.com">
+      <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+      <link href="https://fonts.googleapis.com/css2?family=Source+Code+Pro:ital,wght@0,200..900;1,200..900&display=swap" rel="stylesheet">
+
+      <link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Italiana&family=Source+Code+Pro:ital,wght@0,200..900;1,200..900&display=swap" rel="stylesheet">
+</head>
+<body>
+    <header class="navBar">
+        <a id="Art-hub">Article-Hub</a>
+        
+       <div class="search-bar">
+          <input id="search" type="search" placeholder="Search To Read...">
+          <a href="#">
+          <i class="fa fa-magnifying-glass"></i>
+          </a>
+       </div>
+
+       <ul class=" nav-elements">
+
+          <li id="home">
+              <div id="home-bg">
+                  <a id="home-text">Home</a>
+              </div>
+              
+          </li>
+
+          <li id="menu">
+              <a >Menu</a>
+          </li>
+          <li id="signup">
+            <a id="signup-link" href="{% url 'login' %}">Login</a> &ensp; 
+        </li>
+          <li id="signup">
+              <a id="signup-link" href="{% url 'signup' %}">Sign-Up</a>
+          </li>
+ 
+     </ul>
+    </header>
+
+    <div class="banner">
+        <h1 id="banner-text">Learn <br> By <br> Reading</h1>
+            <img id="banner-img" src="{% static 'images/Banner.svg' %}" alt="Digital Art" height="500px" width="500px">
+    </div>
+
+    
+    <div class="popular-articles-sec">
+        <div id="popular-head-div">
+            <li id="popular-articles-head">Popular This Week</li>
+        </div>
+        
+            <div id="popular-article-1">
+                <div id="article-thumbnail"></div>
+                <ul id="article-text">
+                    <li id="cat-name">Category name</li>
+                    <li id="article-head">Lorem ipsum, dolor sit amet consectetur adipisicing elit.</li>
+                    <li id="authors-name">Authors's Name</li>
+
+                </ul>
+            </div>
+            <div id="popular-article-1">
+                <div id="article-thumbnail"></div>
+                <ul id="article-text">
+                    <li id="cat-name">Category name</li>
+                    <li id="article-head">Lorem ipsum, dolor sit amet consectetur adipisicing elit.</li>
+                    <li id="authors-name">Authors's Name</li>
+
+                </ul>
+            </div>
+            <div id="popular-article-1">
+                <div id="article-thumbnail"></div>
+                <ul id="article-text">
+                    <li id="cat-name">Category name</li>
+                    <li id="article-head">Lorem ipsum, dolor sit amet consectetur adipisicing elit.</li>
+                    <li id="authors-name">Authors's Name</li>
+
+                </ul>
+            </div>
+            <div id="popular-article-1">
+                <div id="article-thumbnail"></div>
+                <ul id="article-text">
+                    <li id="cat-name">Category name</li>
+                    <li id="article-head">Lorem ipsum, dolor sit amet consectetur adipisicing elit.</li>
+                    <li id="authors-name">Authors's Name</li>
+
+                </ul>
+            </div>
+            <div id="popular-article-1">
+                <div id="article-thumbnail"></div>
+                <ul id="article-text">
+                    <li id="cat-name">Category name</li>
+                    <li id="article-head">Lorem ipsum, dolor sit amet consectetur adipisicing elit.</li>
+                    <li id="authors-name">Authors's Name</li>
+
+                </ul>
+            </div>
+
+    </div>
+
+<script src="{%static 'js/main.js' %}"></script>
+</body>
+</html>
