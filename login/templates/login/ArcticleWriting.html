@@ -1,0 +1,73 @@
+{% load static%}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Article Publishing</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+  <link rel="stylesheet" href="{% static 'css/ArticleWriting.css' %}">
+</head>
+<body>
+  <div class="article-publishing-page">
+    <header>
+      <h1>Publish New Article</h1>
+    </header>
+    <div class="toolbar-card">
+      <div class="toolbar-section">
+        <button><b class="icon-bold">Bold</b></button>
+        <button><i class="icon-italic">Italic</i></button>
+        <button><i class="icon-heading"></i></button>
+        <button><i class="icon-link"></i></button>
+        <button><i class="icon-image"></i></button>
+      </div>
+      <div class="toolbar-section">
+        <div class="thumbnail-container">
+          <label for="thumbnail-input">Thumbnail</label>
+          <input type="file" id="thumbnail-input" accept="image/*" >
+        </div>
+        <div class="heading-input">
+          <input name="title" type="text" placeholder="Article Title" >
+        </div>
+        <div class="category-select">
+          <select > 
+            <option class="article-categories-option" value="">Select Category</option>
+            <option class="article-categories-option" value="Technology">Technology</option>
+            <option class="article-categories-option" value="Psychology">Psychology</option>
+            <option class="article-categories-option" value="Entertainment">Entertainment</option>
+            <option class="article-categories-option" value="Games">Games</option>
+            <option class="article-categories-option" value="Education">Education</option>
+            <option class="article-categories-option" value="Cultural">Cultural</option>
+            <!-- Add more categories as needed -->
+          </select>
+        </div>
+      </div>
+    </div>
+
+    <div class="content">
+      <div class="writing-area" contenteditable="true"></div>
+
+      <aside class="sidebar">
+        <div class="article-preview">
+          <div class="popular-cards-slide-conatiner">
+            <div id="popular-article-1" class="article-card" href="articlepage.html">
+              <div id="article-thumbnail" href="articlepage.html"></div>
+              <ul id="article-text">
+                <li id="cat-name"> <i>Category name</i></li>
+                <li id="article-head" href="articlepage.html">Lorem ipsum, dolor sit amet consectetur adipisicing elit.</li>
+                <div id="authorName-and-like">
+                  <li id="authors-name" href="Profile.html">Authors's Name</li>
+                </div>
+              </ul>
+            </div>
+          </div>
+        </div>
+        <button class="save-draft">Save Draft</button>
+        <button class="publish">Publish Article</button>
+      </aside>
+    </div>
+  </div>
+
+  <script src="{% static 'js/ArticleWriting.js' %}"></script>
+</body>
+</html>

@@ -1,118 +1,310 @@
 {% load static %}
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Home Page</title>
-    <link rel="stylesheet" href="{% static 'css/style.css' %}">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font- 
-      awesome/6.5.1/css/all.min.css">
+    <title>ArticleHub | Home</title>
+    <link rel="stylesheet" href="{% static 'css/indexstyle.css' %}">
 
-      <link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Inknut+Antiqua:wght@300;400;500;600;700;800;900&family=Italiana&family=Source+Code+Pro:ital,wght@0,200..900;1,200..900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 
-      <link rel="preconnect" href="https://fonts.googleapis.com">
-      <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-      <link href="https://fonts.googleapis.com/css2?family=Source+Code+Pro:ital,wght@0,200..900;1,200..900&display=swap" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inknut+Antiqua:wght@300;400;500;600;700;800;900&family=Italiana&family=Source+Code+Pro:ital,wght@0,200..900;1,200..900&display=swap"
+        rel="stylesheet">
 
-      <link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Italiana&family=Source+Code+Pro:ital,wght@0,200..900;1,200..900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Source+Code+Pro:ital,wght@0,200..900;1,200..900&display=swap"
+        rel="stylesheet">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Italiana&family=Source+Code+Pro:ital,wght@0,200..900;1,200..900&display=swap"
+        rel="stylesheet">
 </head>
+
 <body>
     <header class="navBar">
-        <a id="Art-hub">Article-Hub</a>
-        
-       <div class="search-bar">
-          <input id="search" type="search" placeholder="Search To Read...">
-          <a href="#">
-          <i class="fa fa-magnifying-glass"></i>
-          </a>
-       </div>
+        <a id="Art-hub" title="Arthro">ArticleHub</a>
 
-       <ul class=" nav-elements">
+        <div class="search-bar">
+            <input id="search" type="search" placeholder="Search To Read...">
+            <div id="search-icon">
+                <i class="fa fa-search"></i>
+            </div>
 
-          <li id="home">
-              <div id="home-bg">
-                  <a id="home-text">Home</a>
-              </div>
-              
-          </li>
+        </div>
 
-          <li id="menu">
-              <a >Menu</a>
-          </li>
-          <li id="signup">
-            <a id="signup-link" href="{% url 'login' %}">Login</a> &ensp; 
-        </li>
-          <li id="signup">
-              <a id="signup-link" href="{% url 'signup' %}">Sign-Up</a>
-          </li>
- 
-     </ul>
+        <ul class=" nav-elements">
+
+            <li id="home">
+                <div id="home-bg">
+
+                    <a id="home-text" href="{%url 'home' %}"> Home </a>
+                </div>
+
+            </li>
+
+            <li id="menu">
+                <a id="menu-button" onclick="showMenu()">Menu</a>
+            </li>
+            {%if user.is_authenticated%}
+            <div id="dropdwn">
+                <button id="dropdwn-bttn"><i class="fa fa-user"></i>{{user.first_name}} {{user.last_name}}</button>
+                <div id="dropdwn-container">
+                    <div id="dropdwn-items-div">
+                        <a id="dropdwn-content" href="{% url 'profile' %}"> Profile</a>
+                        <a id="dropdwn-content" href=""> Dashboard</a>
+                        <a id="dropdwn-content" href=""> Settings</a>
+                    </div>
+
+                </div>
+            </div>
+            {% else %}
+            <li id="signup">
+                <a id="signup-link" href="{% url 'login' %}">LogIn</a> 
+            </li> &nbsp; &nbsp; &nbsp;
+            <li id="signup">
+                <a id="signup-link" href="{% url 'signup' %}">SignUp</a>
+            </li>
+            {%endif%}
+
+
+        </ul>
     </header>
 
     <div class="banner">
         <h1 id="banner-text">Learn <br> By <br> Reading</h1>
-            <img id="banner-img" src="{% static 'images/Banner.svg' %}" alt="Digital Art" height="500px" width="500px">
+        <img id="banner-img" src="{% static 'images/Banner.svg'%}" alt="Digital Art" height="500px" width="500px">
     </div>
 
-    
+
     <div class="popular-articles-sec">
         <div id="popular-head-div">
-            <li id="popular-articles-head">Popular This Week</li>
+            <h4 id="popular-articles-head">Popular This Week</h4>
         </div>
-        
-            <div id="popular-article-1">
-                <div id="article-thumbnail"></div>
-                <ul id="article-text">
-                    <li id="cat-name">Category name</li>
-                    <li id="article-head">Lorem ipsum, dolor sit amet consectetur adipisicing elit.</li>
-                    <li id="authors-name">Authors's Name</li>
+        {% for article in articles %}
+        <div class="popular-cards-slide-conatiner">
+            <a href="{% url 'articlepage' article.article_id %}" target="_blank">
+                <div id="popular-article-1">
+                    <div id="article-thumbnail" style="background-image: url({{article.thumbnail}});"></div>
+                    <ul id="article-text">
+                        <li id="cat-name">{{article.Category.category}}</li>
+                        <li id="article-head">{{article.title}}</li>
+                        <div id="authorName-and-like">
+                            <li id="authors-name">{{article.user.first_name}} {{article.user.last_name}}</li> <i id="like" class="fa fa-thumbs-up">1k</i>
+                        </div>
+                    </ul>
+                </div>
+            </a>
+        </div>
+        {%endfor%}
+        </div>
 
-                </ul>
-            </div>
-            <div id="popular-article-1">
-                <div id="article-thumbnail"></div>
-                <ul id="article-text">
-                    <li id="cat-name">Category name</li>
-                    <li id="article-head">Lorem ipsum, dolor sit amet consectetur adipisicing elit.</li>
-                    <li id="authors-name">Authors's Name</li>
+    <div class="menu-container">
+        <div id="menu-categories">
+            <ul id="written-categories">
 
-                </ul>
-            </div>
-            <div id="popular-article-1">
-                <div id="article-thumbnail"></div>
-                <ul id="article-text">
-                    <li id="cat-name">Category name</li>
-                    <li id="article-head">Lorem ipsum, dolor sit amet consectetur adipisicing elit.</li>
-                    <li id="authors-name">Authors's Name</li>
+                <li><a id="main-categories" href="">Culture</a></li>
+                <li><a id="main-categories" href="">Psychology</a></li>
+                <li><a id="main-categories" href="">Health</a></li>
+                <li><a id="main-categories" href="">Entertainment</a></li>
+                <li><a id="main-categories" href="">Politics</a></li>
+                <li><a id="main-categories" href="">Technology</a></li>
 
-                </ul>
-            </div>
-            <div id="popular-article-1">
-                <div id="article-thumbnail"></div>
-                <ul id="article-text">
-                    <li id="cat-name">Category name</li>
-                    <li id="article-head">Lorem ipsum, dolor sit amet consectetur adipisicing elit.</li>
-                    <li id="authors-name">Authors's Name</li>
+            </ul>
 
-                </ul>
-            </div>
-            <div id="popular-article-1">
-                <div id="article-thumbnail"></div>
-                <ul id="article-text">
-                    <li id="cat-name">Category name</li>
-                    <li id="article-head">Lorem ipsum, dolor sit amet consectetur adipisicing elit.</li>
-                    <li id="authors-name">Authors's Name</li>
+            <div id="vl"></div>
 
-                </ul>
-            </div>
+            <ul id="visual-categories">
+
+                <li><a id="side-categories" href="">Podcast <i id="" class="fa fa-podcast"></i></a></li>
+                <li><a id="side-categories" href="">Video <i id="" class="fa fa-photo-film"></i></a></li>
+                <li><a id="side-categories" href="">Art <i id="" class="fa fa-brush"></i></a></li>
+
+            </ul>
+
+        </div>
 
     </div>
 
-<script src="{%static 'js/main.js' %}"></script>
+    <div class="tech-category">
+        <div id="tech-head-more">
+            <h4 id="tech-category-head">Technology <i id="drop-icon" class="fa fa-caret-down"></i></h4>
+            <a href="" id="view-more-tech">View more</a>
+        </div>
+
+        <div id="line-break"></div>
+
+        <div id="tech-articles">
+
+            <div id="popular-article-1">
+                <div id="article-thumbnail"></div>
+                <ul id="article-text">
+                    <li id="cat-name">Category name</li>
+                    <li id="article-head">Lorem ipsum, dolor sit amet consectetur adipisicing elit.</li>
+                    <div id="authorName-and-like">
+                        <li id="authors-name">Authors's Name</li> <i id="like" class="fa fa-thumbs-up">1k</i>
+                    </div>
+
+                </ul>
+            </div>
+            <div id="popular-article-1">
+                <div id="article-thumbnail"></div>
+                <ul id="article-text">
+                    <li id="cat-name">Category name</li>
+                    <li id="article-head">Lorem ipsum, dolor sit amet consectetur adipisicing elit.</li>
+                    <div id="authorName-and-like">
+                        <li id="authors-name">Authors's Name</li> <i id="like" class="fa fa-thumbs-up">1k</i>
+                    </div>
+
+                </ul>
+            </div>
+            <div id="popular-article-1">
+                <div id="article-thumbnail"></div>
+                <ul id="article-text">
+                    <li id="cat-name">Category name</li>
+                    <li id="article-head">Lorem ipsum, dolor sit amet consectetur adipisicing elit.</li>
+                    <div id="authorName-and-like">
+                        <li id="authors-name">Authors's Name</li> <i id="like" class="fa fa-thumbs-up">1k</i>
+                    </div>
+
+                </ul>
+            </div>
+            <div id="popular-article-1">
+                <div id="article-thumbnail"></div>
+                <ul id="article-text">
+                    <li id="cat-name">Category name</li>
+                    <li id="article-head">Lorem ipsum, dolor sit amet consectetur adipisicing elit.</li>
+                    <div id="authorName-and-like">
+                        <li id="authors-name">Authors's Name</li> <i id="like" class="fa fa-thumbs-up">1k</i>
+                    </div>
+
+                </ul>
+            </div>
+            <div id="popular-article-1">
+                <div id="article-thumbnail"></div>
+                <ul id="article-text">
+                    <li id="cat-name">Category name</li>
+                    <li id="article-head">Lorem ipsum, dolor sit amet consectetur adipisicing elit.</li>
+                    <div id="authorName-and-like">
+                        <li id="authors-name">Authors's Name</li> <i id="like" class="fa fa-thumbs-up">1k</i>
+                    </div>
+
+                </ul>
+            </div>
+
+
+        </div>
+
+    </div>
+
+    <div class="psycho-category">
+        <div id="psycho-head-more">
+            <h4 id="psycho-category-head"> Psychology <i id="drop-icon" class="fa fa-caret-down"></i></h4>
+            <a href="" id="view-more-psycho">View more</a>
+        </div>
+
+        <div id="line-break"></div>
+
+        <div id="psycho-articles">
+
+            <div id="popular-article-1">
+                <div id="article-thumbnail"></div>
+                <ul id="article-text">
+                    <li id="cat-name">Category name</li>
+                    <li id="article-head">Lorem ipsum, dolor sit amet consectetur adipisicing elit.</li>
+                    <div id="authorName-and-like">
+                        <li id="authors-name">Authors's Name</li> <i id="like" class="fa fa-thumbs-up">1k</i>
+                    </div>
+
+                </ul>
+            </div>
+            <div id="popular-article-1">
+                <div id="article-thumbnail"></div>
+                <ul id="article-text">
+                    <li id="cat-name">Category name</li>
+                    <li id="article-head">Lorem ipsum, dolor sit amet consectetur adipisicing elit.</li>
+                    <div id="authorName-and-like">
+                        <li id="authors-name">Authors's Name</li> <i id="like" class="fa fa-thumbs-up">1k</i>
+                    </div>
+
+                </ul>
+            </div>
+            <div id="popular-article-1">
+                <div id="article-thumbnail"></div>
+                <ul id="article-text">
+                    <li id="cat-name">Category name</li>
+                    <li id="article-head">Lorem ipsum, dolor sit amet consectetur adipisicing elit.</li>
+                    <div id="authorName-and-like">
+                        <li id="authors-name">Authors's Name</li> <i id="like" class="fa fa-thumbs-up">1k</i>
+                    </div>
+
+                </ul>
+            </div>
+            <div id="popular-article-1">
+                <div id="article-thumbnail"></div>
+                <ul id="article-text">
+                    <li id="cat-name">Category name</li>
+                    <li id="article-head">Lorem ipsum, dolor sit amet consectetur adipisicing elit.</li>
+                    <div id="authorName-and-like">
+                        <li id="authors-name">Authors's Name</li> <i id="like" class="fa fa-thumbs-up">1k</i>
+                    </div>
+
+                </ul>
+            </div>
+            <div id="popular-article-1">
+                <div id="article-thumbnail"></div>
+                <ul id="article-text">
+                    <li id="cat-name">Category name</li>
+                    <li id="article-head">Lorem ipsum, dolor sit amet consectetur adipisicing elit.</li>
+                    <div id="authorName-and-like">
+                        <li id="authors-name">Authors's Name</li> <i id="like" class="fa fa-thumbs-up">1k</i>
+                    </div>
+
+                </ul>
+            </div>
+
+
+        </div>
+
+    </div>
+
+    <div class="footer">
+        <div id="thank-text">Thanks For Visiting!</div>
+        <div id="content-container">
+            <div id="category-contents">
+                <h5 id="categories-heading">Categories</h5>
+                <ul id="categoeries-content-div">
+                    <li id="categories"> <a id="categories" href="">Science-Fiction</a> </li>
+                    <li id="categories"> <a id="categories" href="">Gaming</a> </li>
+                    <li id="categories"> <a id="categories" href="">Entertainment</a> </li>
+                    <li id="categories"> <a id="categories" href="">Wildlife</a> </li>
+                </ul>
+            </div>
+
+
+            <div id="vl-footer"></div>
+
+            <div id="contact-contents">
+                <h5 id="contact-us-heading">Contact Us</h5>
+                <ul id="contact-content-div">
+                    <li id="contact-symbol"> <a id="contact-symbol" href=""> <i class="fa fa-instagram"></i> </a> </li>
+                    <li id="contact-symbol"> <a id="contact-symbol" href=""> <i class="fa fa-facebook"></i> </a> </li>
+                    <li id="contact-symbol"> <a id="contact-symbol" href=""> <i class="fa fa-twitter"></i> </a> </li>
+                    <li id="contact-symbol"> <a id="contact-symbol" href=""> <i class="fa fa-envelope"></i> </a> </li>
+                </ul>
+            </div>
+
+        </div>
+
+        <h4 id="copyright-line"> &#169 2024 All rights are reserved. </h4>
+    </div>
+
+    <script src="{%static 'js/indexScript.js' %}"></script>
 </body>
+
 </html>

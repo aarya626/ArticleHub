@@ -1,93 +1,105 @@
 {% load static %}
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sign Up Page</title>
-    <link rel="stylesheet" href="{% static 'css/style.css' %}">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-    
-</head>
-<body id="body-signup">
-    <div class="SignUpContainer">
-        <h2>Sign Up</h2>
-        <h5>Sign UP ! to start your journey</h5>
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Sign Up Page</title>
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+        <link rel="stylesheet" href="{% static 'css/signUpStyle.css' %}">
+    </head>
+    <body id="body-signup">
+        <div class="SignUpContainer">
+            <h2>Sign Up</h2>
+            <h5>Sign UP ! to start your journey</h5>
             <div class="signup_form_container"> 
-                <form id="myForm" action="{% url 'signup' %}" method="POST">
-                <div id="FirstandLastName">
-                 <div id="firstName">
-                    <span>
-                        <i class="fa fa-user"></i>
-                    </span>
-                    <input id="Fname" type="text" name="Fname" placeholder="First Name" >
-                 </div>
-
-                 <div id="lastName">
-                    <span>
-                        <i class="fa fa-user"></i>
-                    </span>
-                    <input id="Lname" type="text" name="Lname" placeholder="Last Name">
-                 </div>
-
+                        <form id="myForm" action="{% url 'signup' %}" method="POST">
+                    <div id="FirstandLastName">
+                     <div id="firstName">
+                        <span>
+                            <i class="fa fa-user"></i>
+                        </span>
+                        <input id="Fname" type="text" name="Fname" placeholder="First Name" required>
+                     </div>
+    
+                     <div id="lastName">
+                        <span>
+                            <i class="fa fa-user"></i>
+                        </span>
+                        <input id="Lname" type="text" name="Lname" placeholder="Last Name">
+                     </div>
+    
+                    </div>
+    
+                    <div id="username-signup">
+                        <span>
+                            <i class="fa fa-user"></i>
+                        </span>
+                        <input id="Uname-signup" type="text" name="Uname" placeholder="Username" required>
+                    </div>
+                    
+                    <div id="email-content">
+                        <span>
+                            <i class="fa fa-envelope"></i>
+                        </span>
+                        <input id="email-input" name="Ename" type="text" placeholder="Email Address" required>
+                    </div>
+                    
+                    <div id="password-signup">
+                        <span>
+                            <i class="fa fa-key"></i>
+                        </span>
+                        <input id="Pword-signup" type="password" name="Pname" placeholder="Password" required> 
+                    </div>
+                    
+                    <div id="confirm-password">
+                        <span>
+                            <i class="fa fa-key"></i>
+                        </span>
+                        <input id="Cpword-signup" type="text" name="Cpname" placeholder="Confirm Password" required> 
+                    </div>
+                    <br>
+                    
+                    <div id="rememberMe-signup">
+                        <input id="rememberMeCheck" type="checkbox" value="rememberMe"> <label id="rememberMe" for="rememberMe"> Remember me</label>
+                    </div>
+                    
+                    <h5 id="or-text">OR</h5>
+                    
+                    <div id="google-signup">
+                        <button id="google-button-signup">
+                            <img id="google-icon" src="google icon.svg" height="18px" width="18px">
+                            Sign Up With Google
+                        </button>
+                        
+                        
+                    </div>
+                    
+                    
+                    <input id="submit-signup" onclick="showPopUp()" type="submit" value="Sign Up" >
+                    
+                    <div id="have-an-acc">
+                        <h6 id="for-login">Already have an account? <a id="to-login" href="{% url 'login' %}">Log In</a> </h6>
+                    </div>
+                    
+                </form>
                 </div>
-
-                <div id="username-signup">
-                    <span>
-                        <i class="fa fa-user"></i>
-                    </span>
-                    <input id="Uname-signup" type="text" name="Uname" placeholder="Username" >
-                 </div>
-
-                <div id="email-content">
-                    <span>
-                        <i class="fa fa-envelope"></i>
-                    </span>
-                    <input id="email-input" type="text" name="Ename" placeholder="Email Address" >
-                </div>
-              
-                <div id="password-signup">
-                    <span>
-                        <i class="fa fa-key"></i>
-                    </span>
-                    <input id="Pword-signup" type="password" name="Pname" placeholder="Password" > 
-                </div>
-
-                <div id="confirm-password">
-                    <span>
-                        <i class="fa fa-key"></i>
-                    </span>
-                    <input id="Cpword-signup" type="text" name="Cpname" placeholder="Confirm Password" > 
-                </div>
-                <br>
-                 
-            <div id="rememberMe-signup">
-                <input id="rememberMe" type="checkbox" value="rememberMe"> <label id="rememberMe" for="rememberMe"> Remember me</label>
+           </div>
+    
+           <div class="popup-window">
+            <div id="popup-window-container">
+                <h4>Are you a publisher?</h4>
+                <form id="question-radio-buttons">
+                    <div class="radio-buttons" id="yes-radio"> 
+                        <input class="radio" type="radio" name="Publisher" >Yes
+                    </div>
+                     <div class="radio-buttons"  id="no-radio">
+                        <input class="radio" type="radio" name="Publisher" >No
+                     </div>
+                    
+                    </form> 
+                <input id="question-submit-button" type="button" value="Submit">
             </div>
-                 
-                 <h5>OR</h5>
-
-                 
-                 
-                 <div id="google-signup">
-                     <button id="google-button-signup">
-                         <img id="google-icon" src="{% static 'images/googleicon.svg' %}" height="18px" width="18px">
-                         Continue with Google
-                     </button>
-                     
-                     
-                 </div>
-                <input id="submit-signup" type="submit" value="Sign Up" >
-
-                <div id="have-an-acc">
-                    <h6 id="for-login">Already have an account? <a id="to-login" href="{% url 'login' %}">Log In</a> </h6>
-                </div>
-
-               </form>
-            </div>
-       </div>
-       <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
-
-       <script src="{%static 'js/main.js' %}"></script>
-</body>
-</html>
+           </div>
+    </body>
+    </html>

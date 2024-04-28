@@ -1,0 +1,125 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{{article.title}}</title>
+  <link rel="stylesheet" href="{% static 'css/artilcepage.css' %}">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+</head>
+<body>
+    <!-- <header>
+        <div class="header-container">
+          <a href="#" class="logo">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">
+              <defs>
+                <linearGradient id="gradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                  <stop offset="0%" stop-color="#3f51b5" />
+                  <stop offset="100%" stop-color="#2c3e50" />
+                </linearGradient>
+              </defs>
+              <g transform="translate(25, 20)">
+                <path d="M25,0 L50,50 L0,50 Z" fill="url(#gradient)" />
+                <text x="25" y="35" text-anchor="middle" fill="#fff" font-family="Montserrat, sans-serif" font-size="22" font-weight="700">AH</text>
+              </g>
+            </svg>
+          </a>
+          <nav>
+            <div class="search-bar">
+              <input type="text" placeholder="Search articles..." />
+              <button type="submit">
+                <i class="fas fa-search"></i>
+              </button>
+            </div>
+            <ul>
+              <li><a href="#">Home</a></li>
+              <li><a href="#">Articles</a></li>
+              <li><a href="#">About</a></li>
+              <li><a href="#">Contact</a></li>
+            </ul>
+          </nav>
+        </div>
+      </header> -->
+
+  <main>
+    <article>
+      <h1>{{article.title}}</h1>
+        <div class="article-header">
+          <div class="author-info">
+            <img href="Profile.html" src="author-avatar.jpg" alt="Author Avatar">
+            <div>
+              <h2 href="Profile.html"></h2>
+              <p>Published on: April 11, 2024</p>
+            </div>
+          </div>
+          <div class="mic">
+            <i class="fa fa-microphone"></i>
+          </div>
+        </div>
+        <div class="article-content">
+          <p style="white-space: pre-line;">{{article.content}} </p>
+          
+        </div>
+        <div class="article-actions">
+          <button class="like-btn">
+            <i class="fa fa-thumbs-up"></i>
+            <span class="like-count">0</span>
+          </button>
+          <button class="dislike-btn">
+            <i class="fa fa-thumbs-down"></i>
+            <span class="dislike-count">0</span>
+          </button>
+          <button class="share-btn">
+            <i class="fa fa-share-alt"></i>
+            Share
+          </button>
+        </div>
+          <div class="comments-list"></div>
+        </div>
+        <div class="comments-section">
+            <h2>Comments</h2>
+            <div class="comment-form">
+              <textarea placeholder="Add a comment..."></textarea>
+              <div>
+                <button class="submit-comment">Submit</button>
+              </div>  
+            </div>
+            <div class="comments-list">
+              <div class="comment">
+                <img src="user-avatar-1.jpg" alt="User Avatar" class="comment-avatar">
+                <div class="comment-details">
+                  <h3 class="comment-author">John Doe</h3>
+                  <p class="comment-timestamp">2 hours ago</p>
+                  <p class="comment-content">Great article! Really informative and well-written.</p>
+                  <div class="comment-actions">
+                    <button class="like-comment">
+                      <i class="fa fa-thumbs-up"></i>
+                      <span class="like-count">10</span>
+                    </button>
+                    <button class="dislike-comment">
+                      <i class="fa fa-thumbs-down"></i>
+                      <span class="dislike-count">2</span>
+                    </button>
+                    <button class="reply-comment">Reply</button>
+                  </div>
+                </div>
+                <div class="replies">
+                  <!-- Replies will be added here -->
+                </div>
+              </div>
+              <div class="comment">
+                <!-- Another comment structure -->
+              </div>
+            </div>
+          </div>
+      </article>
+  </main>
+
+  <!-- <footer>
+    <p>&copy; 2024 Article Website. All rights reserved.</p>
+  </footer> -->
+
+  <script src="{% static 'js/articlepage.js'%}"></script>
+</body>
+</html>

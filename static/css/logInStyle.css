@@ -1,0 +1,149 @@
+/*For Log in Form*/
+*{
+    margin: 0;
+    padding: 0;
+}
+
+#body-login{
+    background-image: url("../images/LoginBackground.jpg");
+    background-repeat: no-repeat;
+    background-size: cover;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.Container{
+    text-align: center;
+    height: 400px ;
+    width: 400px ;
+    background-color: rgb(255, 255, 255);
+    border-radius: 10px;
+    justify-content: center;
+    position: relative;
+    box-shadow: 0 3px 12px rgb(0,0,0);
+    margin-top: 200px;
+    padding-top: 30px;
+}
+
+.Form_container{
+    width: 400px;
+    display: flex;
+    justify-content: center;
+    margin-top: 20px;
+}
+
+#Uname{
+    border-radius: 4px;
+    height: 25px;
+    width: 250px;
+    padding: 2px;
+}
+
+
+#Pword{
+    border-radius: 4px;
+    height: 25px;
+    width: 250px;
+    padding: 2px;
+
+}
+
+span{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 20px;
+    width: 20px;
+    border-color: rgb(30, 30, 30);
+    border-style:inset;
+    border-radius: 4px;
+    padding: 2px;
+    margin-right: 5px;
+}
+
+
+#forget_password{
+    text-decoration: none;
+    position: relative;
+    left: 90px;
+    font-size: small;
+    margin-top: 8px;
+}
+
+#username{
+    display: flex;
+    margin-top: 20px;
+}
+
+#password{
+    display: flex;
+    margin-top: 20px;
+}
+
+#or-text{
+    margin-bottom: 10px;
+}
+
+#google-button{
+    background-color: rgb(240, 240, 240);
+    color: rgb(32, 145, 193);
+    height: 40px;
+    width: 290px;
+    border-radius: 5px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size:large;
+    margin-top: 20px;
+    margin-bottom: 20px;
+    border-color: #1685c9;
+    display: none;
+}
+
+#google-icon{
+    background-color: rgb(243, 243, 243);
+    padding: 4px;
+    border-radius: 50%;
+    position: relative;
+    right: 45px;
+}
+
+#submit{
+    background-color: rgb(4, 71, 196);
+    color: rgb(240, 243, 243);
+    height: 40px;
+    width: 295px;
+    border-radius: 20px;
+    font-size: large;
+}
+
+#submit:hover{
+    background-color: rgb(45, 61, 134);
+}
+
+#new-user{
+    font-size: 0.9rem;
+    margin-top: 10px;
+}
+
+#logIn-to-signUp{
+    font-size: 0.9rem;
+    text-decoration: none;
+    cursor: pointer;
+    color: rgb(25, 25, 134);
+}
+
+#logIn-to-signUp:hover{
+    color: rgb(105, 41, 164);
+    text-decoration: underline;
+}
+
+#wrong-credentials{
+    border: none;
+    color: red;
+    display: flex;
+    justify-content: center;
+    height: 32px;
+    width: 100%;
+}

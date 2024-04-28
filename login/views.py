@@ -1,25 +1,27 @@
-from django.shortcuts import render, redirect
-from django.db import connection
+import json
+from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib import messages
 from django.contrib.auth import authenticate, login
 from django.contrib.auth.hashers import make_password, check_password
-from .models import Users
+from .models import Users, Articles
 
 # Create your views here.
 
-
 def home(request):
-    return render(request, 'login/home.html')
+    articles =Articles.objects.select_related('Category','user')
+    context = {
+        'articles': articles
+    }
+    return render(request, 'login/home.html',context)
 
 
 def login_view(request):
     if request.method == 'POST':
         username = request.POST['Uname']
         password = request.POST['Pname']
-        # password = make_password(password)
         user = authenticate(request, username=username, password=password)
         if user is not None:
-            login(request, user)
+            login(request, user)  
             return redirect('home')
         else:
             messages.error(request, 'Invalid username or password.')
@@ -28,7 +30,7 @@ def login_view(request):
     return render(request, "login/logIn.html")
 
 
-def signup(request):
+def signup_view(request):
     if request.method == "POST":
         first_name = request.POST["Fname"]
         last_name = request.POST["Lname"]
@@ -43,7 +45,32 @@ def signup(request):
             username=username,
             password=password,
         )
-        login(request, user)
 
+        login(request, user)
         return redirect('home') 
     return render(request, "login/signup.html")
+
+
+def profile_view(request):
+    user = request.user
+    if not user.bio:
+        user.bio = ""
+    if not user.profile:
+        user.profile = "/static/images/profile_pics/defaultpfpsvg.png" 
+    return render(request,"login/Profile.html")
+
+
+def article_page(request,article_id):
+    article = get_object_or_404(Articles,pk=article_id)
+    context = {
+        'article':article
+    }
+    return render(request,"login/articlepage.html",context)
+
+
+def article_publish(request):
+    if request.method == 'POST':
+        data = json.loads(request.body)
+
+        print(data["heading"])
+    return render(request,"login/ArcticleWriting.html")

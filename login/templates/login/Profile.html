@@ -1,0 +1,248 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Profile</title>
+    <link rel="stylesheet" href="{% static 'css/ProfileStyle.css' %}">
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+</head>
+<body>
+    <div class="profile-page" >
+        <header>
+          <img class="profile-pic" src="{{user.profile}}">
+          <i class="fa fa-pen"></i>
+          <h1 class="name">{{user.first_name}} {{user.last_name}}</h1>
+          <div id="bio-div">
+            <p class="bio" id="bio" value="bio">{{user.bio}}</p>
+          </div>
+        </header>
+
+        <div class="user-analytics">
+            <ul >
+                <li  id="followers-num">
+                    <div class="follow numbers"> 0</div>
+                    Followers
+                </li>
+                <li id="following-num">
+                    <div class="following numbers">0</div>
+                    Following
+                </li>
+            </ul>
+          </div>
+          
+      
+        <nav>
+          <ul class="nav-tabs">
+            <li><a href="#" class="tab" data-tab="reading-list">Reading List</a></li>
+            <li><a href="#" class="tab " data-tab="published">Published Articles</a></li>
+            <!-- <li><a href="#" class="tab" data-tab="preferences">Preferences</a></li> -->
+            <li><a href="#" class="tab" data-tab="settings">Settings</a></li>
+            <!-- <li><a href="#" class="tab" data-tab="drafts">Drafts</a></li>
+            <li><a href="#" class="tab" data-tab="analytics">Analytics</a></li> -->
+          </ul>
+        </nav>
+      
+        <main>
+          <div class="tab-content" id="reading-list">
+               
+            
+        <div class="profile-articles-container" id="reading-list-articles">
+
+          <div id="popular-article-1" href="articlepage.html">
+              <div id="article-thumbnail" href="articlepage.html"></div>
+              <ul id="article-text">
+                  <li id="cat-name">Category name</li>
+                  <li id="article-head">Lorem ipsum, dolor sit amet consectetur adipisicing elit.</li>
+                  <div id="authorName-and-like">
+                      <li id="authors-name">Authors's Name</li> <i id="like" class="fa fa-thumbs-up">1k</i>
+                  </div>
+                 
+              </ul>
+          </div>
+          <div id="popular-article-1">
+              <div id="article-thumbnail"></div>
+              <ul id="article-text">
+                  <li id="cat-name">Category name</li>
+                  <li id="article-head">Lorem ipsum, dolor sit amet consectetur adipisicing elit.</li>
+                  <div id="authorName-and-like">
+                      <li id="authors-name">Authors's Name</li> <i id="like" class="fa fa-thumbs-up">1k</i>
+                  </div>
+
+              </ul>
+          </div>
+          <div id="popular-article-1">
+              <div id="article-thumbnail"></div>
+              <ul id="article-text">
+                  <li id="cat-name">Category name</li>
+                  <li id="article-head">Lorem ipsum, dolor sit amet consectetur adipisicing elit.</li>
+                  <div id="authorName-and-like">
+                      <li id="authors-name">Authors's Name</li> <i id="like" class="fa fa-thumbs-up">1k</i>
+                  </div>
+
+              </ul>
+          </div>
+          <div id="popular-article-1">
+              <div id="article-thumbnail"></div>
+              <ul id="article-text">
+                  <li id="cat-name">Category name</li>
+                  <li id="article-head">Lorem ipsum, dolor sit amet consectetur adipisicing elit.</li>
+                  <div id="authorName-and-like">
+                      <li id="authors-name">Authors's Name</li> <i id="like" class="fa fa-thumbs-up">1k</i>
+                  </div>
+
+              </ul>
+          </div>
+          <div id="popular-article-1">
+              <div id="article-thumbnail"></div>
+              <ul id="article-text">
+                  <li id="cat-name">Category name</li>
+                  <li id="article-head">Lorem ipsum, dolor sit amet consectetur adipisicing elit.</li>
+                  <div id="authorName-and-like">
+                      <li id="authors-name">Authors's Name</li> <i id="like" class="fa fa-thumbs-up">1k</i>
+                  </div>
+
+              </ul>
+          </div>
+
+
+      </div>
+      
+          </div>
+
+          <div class="tab-content" id="published">
+            
+            <div class="profile-articles-container" id="published-articles">
+
+                <div id="popular-article-1">
+                    <div id="article-thumbnail"></div>
+                    <ul id="article-text">
+                        <li id="cat-name">Category name</li>
+                        <li id="article-head">Lorem ipsum, dolor sit amet consectetur adipisicing elit.</li>
+                        <div id="authorName-and-like">
+                            <li id="authors-name">Authors's Name</li> <i id="like" class="fa fa-thumbs-up">1k</i>
+                        </div>
+                       
+                    </ul>
+                </div>
+                <div id="popular-article-1">
+                    <div id="article-thumbnail"></div>
+                    <ul id="article-text">
+                        <li id="cat-name">Category name</li>
+                        <li id="article-head">Lorem ipsum, dolor sit amet consectetur adipisicing elit.</li>
+                        <div id="authorName-and-like">
+                            <li id="authors-name">Authors's Name</li> <i id="like" class="fa fa-thumbs-up">1k</i>
+                        </div>
+      
+                    </ul>
+                </div>
+                <div id="popular-article-1">
+                    <div id="article-thumbnail"></div>
+                    <ul id="article-text">
+                        <li id="cat-name">Category name</li>
+                        <li id="article-head">Lorem ipsum, dolor sit amet consectetur adipisicing elit.</li>
+                        <div id="authorName-and-like">
+                            <li id="authors-name">Authors's Name</li> <i id="like" class="fa fa-thumbs-up">1k</i>
+                        </div>
+      
+                    </ul>
+                </div>
+                <div id="popular-article-1">
+                    <div id="article-thumbnail"></div>
+                    <ul id="article-text">
+                        <li id="cat-name">Category name</li>
+                        <li id="article-head">Lorem ipsum, dolor sit amet consectetur adipisicing elit.</li>
+                        <div id="authorName-and-like">
+                            <li id="authors-name">Authors's Name</li> <i id="like" class="fa fa-thumbs-up">1k</i>
+                        </div>
+      
+                    </ul>
+                </div>
+                <div id="popular-article-1">
+                    <div id="article-thumbnail"></div>
+                    <ul id="article-text">
+                        <li id="cat-name">Category name</li>
+                        <li id="article-head">Lorem ipsum, dolor sit amet consectetur adipisicing elit.</li>
+                        <div id="authorName-and-like">
+                            <li id="authors-name">Authors's Name</li> <i id="like" class="fa fa-thumbs-up">1k</i>
+                        </div>
+      
+                    </ul>
+                </div>
+
+              </div>
+        </div>
+
+          <!-- <div class="tab-content" id="preferences">
+            
+          </div> -->
+
+          <div class="tab-content" id="settings">
+            <div class="user-setting-container">
+                <form action="" class="user-setting-form-container">
+                    <ul >
+                        <li>
+                            <div>Name :</div>
+                            <input class="input-user-text" id="name" type="text" value="Name" placeholder="Name">
+                        </li>
+                        <li>
+                            <div>Username :</div>
+                            <input class="input-user-text" id="user-name" type="text" value="Username" placeholder="Username">
+                        </li>
+                        <li>
+                            <div>Bio :</div>
+                            <input class="input-user-text" id="bio-input" type="text" value="Bio" placeholder="Bio">
+                        </li>
+                        <li>
+                            <div>Gender :</div>
+                            <input class="input-user-text" id="gender" type="text" value="Gender" placeholder="Gender">
+                        </li>
+                    </ul>
+                </form>   
+            </div>
+
+            <div class="social-media-links-container">
+                <h5 >
+                    Social media links
+                </h5>
+                <div id="social-media-icon-div">
+                     <i class="fa fa-instagram"></i>
+                     <i class="fa fa-facebook"></i>
+                     <i class="fa fa-twitter"></i>
+                     <i class="fa fa-envelope"></i>
+                </div>   
+
+            </div>
+
+            <!-- <div class="about-user-container">
+                <h4>ABOUT</h4>
+                <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Quaerat dolor similique officia illum explicabo aliquam iste laudantium, neque nostrum veritatis corrupti reprehenderit omnis aliquid nam nobis numquam voluptatibus commodi maiores.</p>
+            </div> -->
+            
+          </div>
+        
+          <!-- <div class="tab-content" id="drafts">
+           
+          </div>
+          
+          <div class="tab-content" id="analytics">
+            
+          </div> -->
+        </main>
+      </div>
+
+      <!-- <div class="popup-window-link">
+        <div id="popup-window-link-container">
+            <h4><i class="fa fa-instagram"></i>Instagram</h4>
+            <div id="add-link-container">
+                <input type="url" placeholder="Add link" autofocus>
+            </div> 
+            <input id="add-link-submit-button" type="button" value="Done">
+        </div>
+       </div> -->
+
+      <script src="{%static 'js/ProfileScript.js' %}"></script>
+</body>
+</html>
