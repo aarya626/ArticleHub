@@ -1,8 +1,10 @@
 import json
+from django.http import JsonResponse
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib import messages
 from django.contrib.auth import authenticate, login
-from django.contrib.auth.hashers import make_password, check_password
+from django.contrib.auth.hashers import make_password
+from django.core.files.storage import default_storage
 from .models import Users, Articles
 
 # Create your views here.
@@ -70,7 +72,18 @@ def article_page(request,article_id):
 
 def article_publish(request):
     if request.method == 'POST':
-        data = json.loads(request.body)
+        image = request.FILES['image']
+        file_path = default_storage.save('static/images/article_pics/' + image.name, image)
+        thumbnail = request.POST.get('thumbnail')
+        title = request.POST.get('heading')
+        category = request.POST.get('category')
+        content = request.POST.get('content')
+        author = request.POST.get('author')
 
-        print(data["heading"])
-    return render(request,"login/ArcticleWriting.html")
+        # Process other form data as needed
+        print(file_path)
+        print(title)
+        # return redirect('home')
+        return JsonResponse({'status': 'success'})
+
+    return render(request,"login/articlewriting.html")

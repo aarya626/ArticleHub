@@ -73,37 +73,32 @@ saveDraftButton.addEventListener('click', () => {
 
 // Publish article functionality
 publishButton.addEventListener('click', () => {
-  const articleData = {
-    thumbnail: articleThumbnailPreview.style.backgroundImage,
-    heading: articleHeadingInput.value,
-    category: categorySelect.value,
-    content: writingArea.innerHTML,
-    author: authorsNameElement.textContent
-  };
-  // Publish the article data to the server
-  if (!articleData.thumbnail || !articleData.heading || !articleData.category || !articleData.content || !articleData.author) {
-    alert('Please fill in all fields before publishing.');
-    return; // Exit function if any field is empty
-}
-else{
-  console.log('Article published:', articleData);
-  fetch('/publish/', {
-    method: 'POST',
-    headers: {
-        'Content-Type': 'application/json',
-        // Add any other headers if needed
-    },
-    body: JSON.stringify(articleData)
-})
-.then(response => response.json())
-.then(data => {
-    console.log('Response from Django:', data);
-    // Handle the response from Django if needed
-})
-.catch(error => {
-    console.error('Error sending data to Django:', error);
-    // Handle errors if any
-});
-  // You can implement your desired logic here, such as sending the article data to a server for publishing
-}
+  const file = thumbnailInput.files[0];
+  if (file) {
+    const formData = new FormData();
+    formData.append('image', file);
+    formData.append('thumbnail', articleThumbnailPreview.style.backgroundImage);
+    formData.append('heading', articleHeadingInput.value);
+    formData.append('category', categorySelect.value);
+    formData.append('content', writingArea.innerHTML);
+    formData.append('author', authorsNameElement.textContent);
+
+    if (!formData.get('thumbnail') || !formData.get('heading') || !formData.get('category') || !formData.get('content') || !formData.get('author')) {
+      alert('Please fill in all fields before publishing.');
+      return; 
+    } else {
+      console.log('Article published:', file);
+      fetch('/publish/', {
+        method: 'POST',
+        body: formData
+      })
+      .then(response => response.json())
+      .then(data => {
+        console.log('Response from Django:', data);
+      })
+      .catch(error => {
+        console.error('Error sending data to Django:', error);
+      });
+    }
+  }
 });
