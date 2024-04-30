@@ -54,7 +54,7 @@ categorySelect.addEventListener('change', (event) => {
 });
 
 // Set author's name (you can replace this with your desired logic)
-authorsNameElement.textContent = 'John Doe';
+
 
 // Save draft functionality
 saveDraftButton.addEventListener('click', () => {
@@ -63,7 +63,6 @@ saveDraftButton.addEventListener('click', () => {
     heading: articleHeadingInput.value,
     category: categorySelect.value,
     content: writingArea.innerHTML,
-    author: authorsNameElement.textContent
   };
 
   // Save the draft data to local storage or send it to a server
@@ -81,13 +80,11 @@ publishButton.addEventListener('click', () => {
     formData.append('heading', articleHeadingInput.value);
     formData.append('category', categorySelect.value);
     formData.append('content', writingArea.innerHTML);
-    formData.append('author', authorsNameElement.textContent);
 
-    if (!formData.get('thumbnail') || !formData.get('heading') || !formData.get('category') || !formData.get('content') || !formData.get('author')) {
+    if (!formData.get('thumbnail') || !formData.get('heading') || !formData.get('category') || !formData.get('content')) {
       alert('Please fill in all fields before publishing.');
       return; 
     } else {
-      console.log('Article published:', file);
       fetch('/publish/', {
         method: 'POST',
         body: formData
@@ -95,6 +92,7 @@ publishButton.addEventListener('click', () => {
       .then(response => response.json())
       .then(data => {
         console.log('Response from Django:', data);
+        window.location.href = `/articlepage/${data.id}`;  
       })
       .catch(error => {
         console.error('Error sending data to Django:', error);
