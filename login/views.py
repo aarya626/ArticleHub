@@ -1,12 +1,13 @@
 import json
 from django.http import JsonResponse
+from django.db.models import Q
 from django.urls import reverse
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib import messages
 from django.contrib.auth import authenticate, login
 from django.contrib.auth.hashers import make_password
 from django.core.files.storage import default_storage
-from .models import Users, Articles, Categories
+from .models import Users, Articles, Categories, Likes
 
 # Create your views here.
 
@@ -64,6 +65,25 @@ def profile_view(request):
 
 
 def article_page(request,article_id):
+    if request.method == 'POST':
+        user = request.user
+        likecount = request.POST.get('likecount')
+        # print(like,article_id,user.user_id)
+        check_like = Likes.objects.filter(Q(article_id=article_id)&Q(user_id=user.user_id))
+        if check_like:
+            # print("HAHAHAHH")
+            check_like.delete()
+            likecount -= 1
+        else:
+            # print("HEHEEHEH")
+            like = Likes.objects.create(
+                article_id=article_id,
+                user_id = user.user_id
+            )
+        article_row = Articles.objects.get(article_id=article_id)
+        article_row.likescount = likecount
+        article_row.save()
+        return JsonResponse({'Success':"Ok"})
     article = get_object_or_404(Articles,pk=article_id)
     context = {
         'article':article

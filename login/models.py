@@ -36,6 +36,7 @@ class Articles(models.Model):
     content = models.TextField()
     thumbnail = models.CharField(max_length=1000, null=False)
     other_pics = models.CharField(max_length=2000, null=True)
+    likescount = models.IntegerField(default=0)
     created_at = models.DateTimeField(auto_now_add=True)
 
     class Meta:

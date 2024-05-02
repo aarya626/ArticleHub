@@ -204,3 +204,18 @@ body {
       margin-top: 20px;
     }
   }
+  #headingSelect {
+    /* display: none; */
+    /* padding: 5px 10px; */
+    margin-right: 5px;
+    background-color: #FFFFFF;
+    color: #4527A0;
+    border: none;
+    border-radius: 8px;
+    padding: 5px 10px;
+  }
+  
+  .show {
+    display: block;
+  }
+  

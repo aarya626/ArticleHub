@@ -21,14 +21,26 @@ const categoryNameElement = document.getElementById('cat-name');
 const authorsNameElement = document.getElementById('authors-name');
 const saveDraftButton = document.querySelector('.save-draft');
 const publishButton = document.querySelector('.publish');
+const headingSelect = document.getElementById('headingSelect');
 
-// Toolbar button click handlers
 toolbarButtons.forEach(button => {
   button.addEventListener('click', () => {
     const command = button.querySelector('i').className.replace('icon-', '');
-    document.execCommand(command, false, null);
+    if (command === 'heading') {
+      headingSelect.classList.toggle('show');
+    } else if (command === 'underline') {
+      document.execCommand('underline', false, null);
+    } else {
+      document.execCommand(command, false, null);
+    }
   });
 });
+
+headingSelect.addEventListener('change', () => {
+  const selectedHeadingLevel = headingSelect.value;
+  document.execCommand('formatBlock', false, selectedHeadingLevel);
+});
+
 
 // Handle thumbnail upload
 const thumbnailInput = document.getElementById('thumbnail-input');
@@ -65,9 +77,7 @@ saveDraftButton.addEventListener('click', () => {
     content: writingArea.innerHTML,
   };
 
-  // Save the draft data to local storage or send it to a server
   console.log('Draft saved:', draftData);
-  // You can implement your desired logic here, such as sending the draft data to a server or storing it in local storage
 });
 
 // Publish article functionality

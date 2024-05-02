@@ -44,6 +44,7 @@
 
   <main>
     <article>
+      <h6 id="article_id" style="display: none;">{{article.article_id}}</h6>
       <h1>{{article.title}}</h1>
         <div class="article-header">
           <div class="author-info">
@@ -64,11 +65,11 @@
         <div class="article-actions">
           <button class="like-btn">
             <i class="fa fa-thumbs-up"></i>
-            <span class="like-count">0</span>
+            <span class="like-count">{{article.likescount}}</span>
           </button>
           <button class="dislike-btn">
             <i class="fa fa-thumbs-down"></i>
-            <span class="dislike-count">0</span>
+            <span class="dislike-count">2</span>
           </button>
           <button class="share-btn">
             <i class="fa fa-share-alt"></i>

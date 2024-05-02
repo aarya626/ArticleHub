@@ -15,12 +15,22 @@
     </header>
     <div class="toolbar-card">
       <div class="toolbar-section">
-        <button><b class="icon-bold">Bold</b></button>
+        <button><i class="icon-bold">Bold</i></button>
         <button><i class="icon-italic">Italic</i></button>
-        <button><i class="icon-heading"></i></button>
+        <select id="headingSelect">
+          <option value="">Select Heading</option>
+          <option value="h1">Heading 1</option>
+          <option value="h2">Heading 2</option>
+          <option value="h3">Heading 3</option>
+          <option value="h4">Heading 4</option>
+          <option value="h5">Heading 5</option>
+          <option value="h6">Heading 6</option>
+        </select>
+        <button><i class="icon-underline">Underline</i></button>
         <button><i class="icon-link"></i></button>
         <button><i class="icon-image"></i></button>
       </div>
+      
       <div class="toolbar-section">
         <div class="thumbnail-container">
           <label for="thumbnail-input">Thumbnail</label>
