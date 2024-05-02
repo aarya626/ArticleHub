@@ -63,27 +63,25 @@ def profile_view(request):
         user.profile = "/static/images/profile_pics/defaultpfpsvg.png" 
     return render(request,"login/Profile.html")
 
-
+liked = False
 def article_page(request,article_id):
+    user = request.user
+    article_row = Articles.objects.get(article_id=article_id)
     if request.method == 'POST':
-        user = request.user
-        likecount = request.POST.get('likecount')
-        # print(like,article_id,user.user_id)
         check_like = Likes.objects.filter(Q(article_id=article_id)&Q(user_id=user.user_id))
         if check_like:
-            # print("HAHAHAHH")
             check_like.delete()
-            likecount -= 1
+            article_row.likescount -= 1
+            liked = False
         else:
-            # print("HEHEEHEH")
             like = Likes.objects.create(
                 article_id=article_id,
                 user_id = user.user_id
             )
-        article_row = Articles.objects.get(article_id=article_id)
-        article_row.likescount = likecount
+            article_row.likescount += 1
+            liked = True
         article_row.save()
-        return JsonResponse({'Success':"Ok"})
+        return JsonResponse({'success':"Ok",'liked':liked})
     article = get_object_or_404(Articles,pk=article_id)
     context = {
         'article':article

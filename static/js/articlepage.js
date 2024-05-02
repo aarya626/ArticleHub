@@ -18,33 +18,27 @@ const shareBtnEl = document.querySelector('.share-btn');
 // Like functionality
 let likeCount = likeCountEl.textContent; // Declare likeCount variable
 let isLiked = false;
-
 likeBtnEl.addEventListener('click', () => {
-  if (!isLiked) {
-    likeCount++;
-    likeCountEl.textContent = likeCount;
-    likeBtnEl.classList.add('active');
-    isLiked = true;
-  } else {
-    likeCount--;
-    likeCountEl.textContent = likeCount;
-    likeBtnEl.classList.remove('active');
-    isLiked = false;
-  }
-  const formData = new FormData();
-  formData.append("likecount",likeCount);
-  fetch(`/articlepage/${article_id}/`,{
-    method: 'POST',
-    body: formData
+  fetch(`/articlepage/${article_id}/`, {
+    method: 'POST'
   })
   .then(response => response.json())
-  .then(data =>{
-    console.log("Message from django",data.Success);
-  })
-  .catch(error=>{
-    console.log("Error: ",error);
-  })
+  .then(data => {
+      if (data.liked) {
+        likeCount++;
+        likeBtnEl.classList.add('active');
+      } else {
+        likeCount--;
+        likeBtnEl.classList.remove('active');
+      }
+      likeCountEl.textContent = likeCount;
+    }
+  )
+  .catch(error => {
+    console.log("Error:", error);
+  });
 });
+
 
 // Comment functionality
 commentFormEl.addEventListener('submit', (event) => {
