@@ -12,7 +12,7 @@ from .models import Users, Articles, Categories, Likes
 # Create your views here.
 
 def home(request):
-    articles =Articles.objects.select_related('Category','user')
+    articles = Articles.objects.select_related('Category','user').order_by('-likescount')
     context = {
         'articles': articles
     }
