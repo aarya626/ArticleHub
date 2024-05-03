@@ -37,6 +37,7 @@ class Articles(models.Model):
     thumbnail = models.CharField(max_length=1000, null=False)
     other_pics = models.CharField(max_length=2000, null=True)
     likescount = models.IntegerField(default=0)
+    dislikescount = models.IntegerField(default=0)
     created_at = models.DateTimeField(auto_now_add=True)
 
     class Meta:
@@ -51,6 +52,16 @@ class Likes(models.Model):
 
     class Meta:
         db_table = 'Likes'
+
+
+class Dislikes(models.Model):
+    dislike_id = models.AutoField(primary_key=True)
+    article = models.ForeignKey(Articles, on_delete=models.CASCADE)
+    user = models.ForeignKey(Users, on_delete=models.CASCADE)
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        db_table = 'Dislikes'
 
 
 class Comments(models.Model):

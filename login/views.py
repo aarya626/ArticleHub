@@ -67,6 +67,10 @@ liked = False
 def article_page(request,article_id):
     user = request.user
     article_row = Articles.objects.get(article_id=article_id)
+    article = get_object_or_404(Articles,pk=article_id)
+    context = {
+        'article':article
+    }
     if request.method == 'POST':
         check_like = Likes.objects.filter(Q(article_id=article_id)&Q(user_id=user.user_id))
         if check_like:
@@ -82,10 +86,6 @@ def article_page(request,article_id):
             liked = True
         article_row.save()
         return JsonResponse({'success':"Ok",'liked':liked})
-    article = get_object_or_404(Articles,pk=article_id)
-    context = {
-        'article':article
-    }
     return render(request,"login/articlepage.html",context)
 
 
