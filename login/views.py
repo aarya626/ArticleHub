@@ -7,8 +7,8 @@ from django.contrib import messages
 from django.contrib.auth import authenticate, login
 from django.contrib.auth.hashers import make_password
 from django.core.files.storage import default_storage
-from .models import Users, Articles, Categories
-
+from .models import Users, Articles, Categories, Comments
+from .templatetags.login_extras import simplify_timesince
 # Create your views here.
 
 
@@ -62,8 +62,6 @@ def profile_view(request, username):
     print(user)
     if not user.bio:
         user.bio = ""
-    if not user.profile:
-        user.profile = "/static/images/profile_pics/defaultpfpsvg.png"
     context = {
         'user': user
     }
@@ -73,15 +71,15 @@ def article_page(request, article_id):
     user = request.user
     article = Articles.objects.select_related('user').get(article_id=article_id)
     author = article.user.first_name + ' ' + article.user.last_name
-    profile = article.user.profile if article.user.profile else "/static/images/profile_pics/defaultpfpsvg.png"
-    likes = article.likes.count()
-    dislikes = article.dislikes.count()
+    profile = article.user.profile 
+    comments = Comments.objects.select_related('user').filter(article_id=article_id).all().order_by('-created_at')
     context = {
         'article': article,
         'author': author,
         'profile': profile,
-        'likes': likes,
-        'dislikes':dislikes
+        'likes': article.likes.count(),
+        'dislikes':article.dislikes.count(),
+        'comments':comments
     }
     if request.method == 'POST':
 
@@ -104,6 +102,20 @@ def article_page(request, article_id):
                 if article.likes.filter(pk=user.pk).exists():
                     article.likes.remove(user)
                 article.dislikes.add(user)
+        elif action == 'comment':
+            content = request.POST.get('comment')
+            # print(content)
+            comment = Comments.objects.create(
+                article_id = article_id,
+                user_id = user.user_id,
+                comment = content
+            )
+            commentuser = Users.objects.get(user_id=comment.user_id)
+            print(commentuser)
+            # print(comment.created_at)
+            value = simplify_timesince(comment.created_at)
+            print(value)
+            return JsonResponse({'username':commentuser.username,'timesince':value,'profile':commentuser.profile})
 
         return JsonResponse({'likes_count': article.likes.count(),'dislikes_count': article.dislikes.count()})
         

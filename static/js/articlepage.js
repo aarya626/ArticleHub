@@ -11,10 +11,7 @@ const dislikeCountEl = document.querySelector('.dislike-count');
 
 // Get the comment section elements
 const commentFormEl = document.querySelector('.comment-form');
-const commentTextareaEl = commentFormEl.querySelector('textarea');
-const commentsListEl = document.querySelector('.comments-list');
 const commentBtnEl = document.querySelector('.submit-comment')
-
 
 // Like and dislike functionality
 likeBtnEl.addEventListener('click', () => {
@@ -64,7 +61,35 @@ dislikeBtnEl.addEventListener('click', () => {
 
 // Comment functionality
 commentBtnEl.addEventListener('click', ()=>{
-  console.log("submit comment clicksed");
+  const comment = commentFormEl.querySelector('textarea').value;
+  if (comment==''){
+    document.getElementById('emptyerror').innerHTML = '<p>Please enter a message.</p>'
+    return;
+  }
+  const commentdata = new FormData();
+  commentdata.append('comment',comment);
+  fetch(`/articlepage/${article_id}/`, {
+    method: 'POST',
+    headers:{
+      'X-action': 'comment'
+    },
+    body: commentdata
+  })
+  .then(response => response.json())
+  .then(data => {
+    commentFormEl.querySelector('textarea').value = '';
+    document.getElementById('newcomment').innerHTML = `<div class="comment">
+    <img src="${data.profile}" class="comment-avatar">
+    <div class="comment-details">
+      <h3 class="comment-author">${data.username}</h3>
+      <p class="comment-timestamp">${data.timesince}</p>
+      <p class="comment-content">${comment}</p>
+    </div>
+  </div>`
+  })
+  .catch(error => {
+    console.log("Error: ", error);
+  });
 })
 
 // Share functionality

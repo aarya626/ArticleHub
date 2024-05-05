@@ -1,3 +1,4 @@
+{% load login_extras %}
 {% load static %}
 <!DOCTYPE html>
 <html lang="en">
@@ -92,36 +93,23 @@
           <textarea placeholder="Add a comment..."></textarea>
           <div>
             <button class="submit-comment">Submit</button>
+            <div id="emptyerror"></div>
           </div>
         </div>
         <div class="comments-list">
+          <div id="newcomment"></div>
+          {% for comment in comments%}
           <div class="comment">
-            <img src="user-avatar-1.jpg" alt="User Avatar" class="comment-avatar">
+            <img src="{{comment.user.profile}}" class="comment-avatar">
             <div class="comment-details">
-              <h3 class="comment-author">John Doe</h3>
-              <p class="comment-timestamp">2 hours ago</p>
-              <p class="comment-content">Great article! Really informative and well-written.</p>
-              <div class="comment-actions">
-                <button class="like-comment">
-                  <i class="fa fa-thumbs-up"></i>
-                  <span class="like-count">10</span>
-                </button>
-                <button class="dislike-comment">
-                  <i class="fa fa-thumbs-down"></i>
-                  <span class="dislike-count">2</span>
-                </button>
-                <button class="reply-comment">Reply</button>
-              </div>
-            </div>
-            <div class="replies">
-              <!-- Replies will be added here -->
+              <h3 class="comment-author">{{comment.user.username}}</h3>
+              <p class="comment-timestamp">{{comment.created_at|simplify_timesince}}</p>
+              <p class="comment-content">{{comment.comment}}</p>
             </div>
           </div>
-          <div class="comment">
-            <!-- Another comment structure -->
-          </div>
-        </div>
+          {% endfor %}
       </div>
+    </div>
     </article>
   </main>
   <!-- <footer>
