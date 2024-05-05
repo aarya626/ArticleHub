@@ -76,7 +76,7 @@
                     </div>
                     
                     
-                    <input id="submit-signup" onclick="showPopUp()" type="submit" value="Sign Up" >
+                    <input id="submit-signup" type="submit" value="Sign Up" >
                     
                     <div id="have-an-acc">
                         <h6 id="for-login">Already have an account? <a id="to-login" href="{% url 'login' %}">Log In</a> </h6>
@@ -101,5 +101,6 @@
                 <input id="question-submit-button" type="button" value="Submit">
             </div>
            </div>
+           <script src="{% static 'js/signup.js'%}"></script>
     </body>
     </html>

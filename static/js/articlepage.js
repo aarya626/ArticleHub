@@ -1,4 +1,6 @@
 const article_id = document.getElementById('article_id').textContent;
+const checkuser = document.getElementById('checkuser').textContent;
+
 // Get the like button and counter
 const likeBtnEl = document.querySelector('.like-btn');
 const likeCountEl = document.querySelector('.like-count');
@@ -11,49 +13,62 @@ const dislikeCountEl = document.querySelector('.dislike-count');
 const commentFormEl = document.querySelector('.comment-form');
 const commentTextareaEl = commentFormEl.querySelector('textarea');
 const commentsListEl = document.querySelector('.comments-list');
+const commentBtnEl = document.querySelector('.submit-comment')
 
-// Get the share button
-const shareBtnEl = document.querySelector('.share-btn');
 
-// Like functionality
-let likeCount = likeCountEl.textContent; // Declare likeCount variable
-let isLiked = false;
+// Like and dislike functionality
 likeBtnEl.addEventListener('click', () => {
-  fetch(`/articlepage/${article_id}/`, {
-    method: 'POST'
-  })
-  .then(response => response.json())
-  .then(data => {
-      if (data.liked) {
-        likeCount++;
-        likeBtnEl.classList.add('active');
-      } else {
-        likeCount--;
-        likeBtnEl.classList.remove('active');
+  if(checkuser === 'AnonymousUser'){
+    window.location.href = `/login`;  
+  } else {
+    fetch(`/articlepage/${article_id}/`, {
+      method: 'POST',
+      headers:{
+        'X-action': 'like'
       }
-      likeCountEl.textContent = likeCount;
-    }
-  )
-  .catch(error => {
-    console.log("Error:", error);
-  });
-});
-
-
-// Comment functionality
-commentFormEl.addEventListener('submit', (event) => {
-  event.preventDefault();
-  const commentText = commentTextareaEl.value.trim();
-  if (commentText) {
-    const commentEl = document.createElement('li');
-    commentEl.textContent = commentText;
-    commentsListEl.appendChild(commentEl);
-    commentTextareaEl.value = '';
+    })
+    .then(response => response.json())
+    .then(data => {
+      likeCountEl.textContent = data.likes_count;
+      dislikeCountEl.textContent = data.dislikes_count;
+    })
+    .catch(error => {
+      console.log("Error:", error);
+    });
   }
 });
 
-// Share functionality
-shareBtnEl.addEventListener('click', () => {
-  // Implement share functionality (e.g., open a sharing dialog, copy the URL)
-  console.log('Share button clicked');
+
+dislikeBtnEl.addEventListener('click', () => {
+  if(checkuser === 'AnonymousUser'){
+    window.location.href = `/login`;  
+  } else {
+    fetch(`/articlepage/${article_id}/`, {
+      method: 'POST',
+      headers:{
+        'X-action': 'dislike'
+      }
+    })
+    .then(response => response.json())
+    .then(data => {
+      likeCountEl.textContent = data.likes_count;
+      dislikeCountEl.textContent = data.dislikes_count;
+    })
+    .catch(error => {
+      console.log("Error: ", error);
+    });
+  }
 });
+
+
+
+// Comment functionality
+commentBtnEl.addEventListener('click', ()=>{
+  console.log("submit comment clicksed");
+})
+
+// Share functionality
+// shareBtnEl.addEventListener('click', () => {
+  // Implement share functionality (e.g., open a sharing dialog, copy the URL)
+  // console.log('Share button clicked');
+// });

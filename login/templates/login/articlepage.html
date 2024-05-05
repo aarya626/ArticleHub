@@ -1,6 +1,7 @@
 {% load static %}
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -8,8 +9,9 @@
   <link rel="stylesheet" href="{% static 'css/artilcepage.css' %}">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 </head>
+
 <body>
-    <!-- <header>
+  <!-- <header>
         <div class="header-container">
           <a href="#" class="logo">
             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">
@@ -41,86 +43,92 @@
           </nav>
         </div>
       </header> -->
-
-  <main>
-    <article>
-      <h6 id="article_id" style="display: none;">{{article.article_id}}</h6>
+      
+      <main>
+        <article>
+          <h6 id="article_id" style="display: none;">{{article.article_id}}</h6>
+          <h6 id="checkuser" style="display: none;">{{user}}</h6>
       <h1>{{article.title}}</h1>
-        <div class="article-header">
-          <div class="author-info">
-            <img href="Profile.html" src="author-avatar.jpg" alt="Author Avatar">
-            <div>
-              <h2 href="Profile.html"></h2>
-              <p>Published on: April 11, 2024</p>
-            </div>
-          </div>
-          <div class="mic">
-            <i class="fa fa-microphone"></i>
-          </div>
-        </div>
-        <div class="article-content">
-          <p style="white-space: pre-line;">{{article.content | safe }} </p>
-          
-        </div>
-        <div class="article-actions">
-          <button class="like-btn">
-            <i class="fa fa-thumbs-up"></i>
-            <span class="like-count">{{article.likescount}}</span>
-          </button>
-          <button class="dislike-btn">
-            <i class="fa fa-thumbs-down"></i>
-            <span class="dislike-count">2</span>
-          </button>
-          <button class="share-btn">
-            <i class="fa fa-share-alt"></i>
-            Share
-          </button>
-        </div>
-          <div class="comments-list"></div>
-        </div>
-        <div class="comments-section">
-            <h2>Comments</h2>
-            <div class="comment-form">
-              <textarea placeholder="Add a comment..."></textarea>
-              <div>
-                <button class="submit-comment">Submit</button>
-              </div>  
-            </div>
-            <div class="comments-list">
-              <div class="comment">
-                <img src="user-avatar-1.jpg" alt="User Avatar" class="comment-avatar">
-                <div class="comment-details">
-                  <h3 class="comment-author">John Doe</h3>
-                  <p class="comment-timestamp">2 hours ago</p>
-                  <p class="comment-content">Great article! Really informative and well-written.</p>
-                  <div class="comment-actions">
-                    <button class="like-comment">
-                      <i class="fa fa-thumbs-up"></i>
-                      <span class="like-count">10</span>
-                    </button>
-                    <button class="dislike-comment">
-                      <i class="fa fa-thumbs-down"></i>
-                      <span class="dislike-count">2</span>
-                    </button>
-                    <button class="reply-comment">Reply</button>
-                  </div>
-                </div>
-                <div class="replies">
-                  <!-- Replies will be added here -->
-                </div>
-              </div>
-              <div class="comment">
-                <!-- Another comment structure -->
-              </div>
-            </div>
-          </div>
-      </article>
-  </main>
+      <div class="article-header">
+        <div class="author-info">
+          <a href="{% url 'profile' article.user.username %}">
+          <img src="{{profile}}" alt="Author Avatar">
+        </a>
+          <div>
+            <a href="{% url 'profile' article.user.username %}" style="text-decoration: none;" >
+            <h2 >{{author}}</h2>
+          </a>
+            <p>Published on: {{article.created_at}}</p>
 
+          </div>
+        </div>
+        <div class="mic">
+          <i class="fa fa-microphone"></i>
+        </div>
+      </div>
+      <div class="article-content">
+        <p style="white-space: pre-line;">{{article.content | safe }} </p>
+
+      </div>
+      <div class="article-actions">
+        <button class="like-btn">
+          <i class="fa fa-thumbs-up"></i>
+          <span class="like-count">{{likes}}</span>
+        </button>
+        <button class="dislike-btn">
+          <i class="fa fa-thumbs-down"></i>
+          <span class="dislike-count">{{dislikes}}</span>
+        </button>
+        <button class="share-btn">
+          <i class="fa fa-share-alt"></i>
+          Share
+        </button>
+      </div>
+      <div class="comments-list"></div>
+      </div>
+      <div class="comments-section">
+        <h2>Comments</h2>
+        <div class="comment-form">
+          <textarea placeholder="Add a comment..."></textarea>
+          <div>
+            <button class="submit-comment">Submit</button>
+          </div>
+        </div>
+        <div class="comments-list">
+          <div class="comment">
+            <img src="user-avatar-1.jpg" alt="User Avatar" class="comment-avatar">
+            <div class="comment-details">
+              <h3 class="comment-author">John Doe</h3>
+              <p class="comment-timestamp">2 hours ago</p>
+              <p class="comment-content">Great article! Really informative and well-written.</p>
+              <div class="comment-actions">
+                <button class="like-comment">
+                  <i class="fa fa-thumbs-up"></i>
+                  <span class="like-count">10</span>
+                </button>
+                <button class="dislike-comment">
+                  <i class="fa fa-thumbs-down"></i>
+                  <span class="dislike-count">2</span>
+                </button>
+                <button class="reply-comment">Reply</button>
+              </div>
+            </div>
+            <div class="replies">
+              <!-- Replies will be added here -->
+            </div>
+          </div>
+          <div class="comment">
+            <!-- Another comment structure -->
+          </div>
+        </div>
+      </div>
+    </article>
+  </main>
   <!-- <footer>
-    <p>&copy; 2024 Article Website. All rights reserved.</p>
-  </footer> -->
+<p>&copy; 2024 Article Website. All rights reserved.</p>
+</footer> -->
 
   <script src="{% static 'js/articlepage.js'%}"></script>
 </body>
+
 </html>

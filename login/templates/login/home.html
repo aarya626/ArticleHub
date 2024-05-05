@@ -43,7 +43,7 @@
             <li id="home">
                 <div id="home-bg">
 
-                    <a id="home-text" href="{%url 'home' %}"> Home </a>
+                    <a style="text-decoration: none; color: #070F2B;" id="home-text" href="{%url 'home' %}"> Home </a>
                 </div>
 
             </li>
@@ -56,9 +56,9 @@
                 <button id="dropdwn-bttn"><i class="fa fa-user"></i>{{user.first_name}} {{user.last_name}}</button>
                 <div id="dropdwn-container">
                     <div id="dropdwn-items-div">
-                        <a id="dropdwn-content" href="{% url 'profile' %}"> Profile</a>
-                        <a id="dropdwn-content" href=""> Dashboard</a>
+                        <a id="dropdwn-content" href="{% url 'profile' user.username %}"> Profile</a>
                         <a id="dropdwn-content" href=""> Settings</a>
+                        <a id="dropdwn-content" href=""> Logout</a>
                     </div>
 
                 </div>
@@ -95,7 +95,7 @@
                         <li id="cat-name">{{article.Category.category}}</li>
                         <li id="article-head">{{article.title}}</li>
                         <div id="authorName-and-like">
-                            <li id="authors-name">{{article.user.first_name}} {{article.user.last_name}}</li> <i id="like" class="fa fa-thumbs-up">{{article.likescount}}</i>
+                            <li id="authors-name">{{article.user.first_name}} {{article.user.last_name}}</li> <i id="like" class="fa fa-thumbs-up"></i>
                         </div>
                     </ul>
                 </div>

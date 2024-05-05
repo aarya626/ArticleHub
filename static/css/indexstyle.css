@@ -158,9 +158,9 @@ header.navBar{
     height: 40px;
     width: 400px;
 }
-
+/* 
 #dropdwn{
-}
+} */
 
 #dropdwn-container{
     height: 85px;
@@ -617,12 +617,12 @@ header.navBar{
     border-radius: 2px;
 }
 
-#category-contents{
+/* #category-contents{ */
   
    /* display: flex;
    justify-content: center;
    align-items: center; */
-}
+/* } */
 
 #categories-heading{
    margin: 0;

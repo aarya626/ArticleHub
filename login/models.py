@@ -36,32 +36,12 @@ class Articles(models.Model):
     content = models.TextField()
     thumbnail = models.CharField(max_length=1000, null=False)
     other_pics = models.CharField(max_length=2000, null=True)
-    likescount = models.IntegerField(default=0)
-    dislikescount = models.IntegerField(default=0)
+    likes = models.ManyToManyField(Users,related_name='likes')
+    dislikes = models.ManyToManyField(Users,related_name='dislikes')
     created_at = models.DateTimeField(auto_now_add=True)
 
     class Meta:
         db_table = 'Articles'
-
-
-class Likes(models.Model):
-    like_id = models.AutoField(primary_key=True)
-    article = models.ForeignKey(Articles, on_delete=models.CASCADE)
-    user = models.ForeignKey(Users, on_delete=models.CASCADE)
-    created_at = models.DateTimeField(auto_now_add=True)
-
-    class Meta:
-        db_table = 'Likes'
-
-
-class Dislikes(models.Model):
-    dislike_id = models.AutoField(primary_key=True)
-    article = models.ForeignKey(Articles, on_delete=models.CASCADE)
-    user = models.ForeignKey(Users, on_delete=models.CASCADE)
-    created_at = models.DateTimeField(auto_now_add=True)
-
-    class Meta:
-        db_table = 'Dislikes'
 
 
 class Comments(models.Model):
