@@ -92,8 +92,29 @@ commentBtnEl.addEventListener('click', ()=>{
   });
 })
 
+
+const mic = document.querySelector('#speaker');
+mic.addEventListener('click',()=>{
+  // console.log('clicked');
+  let text = document.getElementById("articlecontent").textContent;
+    
+    // Create a new instance of SpeechSynthesisUtterance
+    let utterance = new SpeechSynthesisUtterance(text);
+    
+    // Optionally, you can specify voice options
+    utterance.lang = 'en-US'; // Set the language
+    // utterance.voice = speechSynthesis.getVoices().find(voice => voice.name === 'Google US English'); // Specify a specific voice (optional)
+
+    // Speak the text
+    speechSynthesis.speak(utterance);
+})
+
 // Share functionality
 // shareBtnEl.addEventListener('click', () => {
   // Implement share functionality (e.g., open a sharing dialog, copy the URL)
   // console.log('Share button clicked');
 // });
+
+function googleTranslator(){
+  new google.translate.TranslateElement("google_translate");
+}

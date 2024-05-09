@@ -1,106 +1,70 @@
 {% load static %}
 <!DOCTYPE html>
 <html lang="en">
-    <head>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>Sign Up Page</title>
-        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-        <link rel="stylesheet" href="{% static 'css/signUpStyle.css' %}">
-    </head>
-    <body id="body-signup">
-        <div class="SignUpContainer">
-            <h2>Sign Up</h2>
-            <h5>Sign UP ! to start your journey</h5>
-            <div class="signup_form_container"> 
-                        <form id="myForm" action="{% url 'signup' %}" method="POST">
-                    <div id="FirstandLastName">
-                     <div id="firstName">
-                        <span>
-                            <i class="fa fa-user"></i>
-                        </span>
-                        <input id="Fname" type="text" name="Fname" placeholder="First Name" required>
-                     </div>
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ArticleHub Signup</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="{% static 'css/signUpStyle.css' %}">
+</head>
+<body>
+  <div class="container">
+    <h1>ArticleHub</h1>
+    <h3>
+        Sign UP ! to start your journey</h3>
+
+    <div class="progress-bar">
+      <span class="step active" onclick="showStep(1)">1</span>
+      <span class="step" onclick="showStep(2)">2</span>
+      <span class="step" onclick="showStep(3)">3</span>
+    </div>
+
+    <form id="signupForm">
+      <div id="step1">
+        <input id="firstname" type="text" placeholder="First Name" required>
+        <input id="lastname" type="text" placeholder="Last Name" >
+        <input id="username" type="text" placeholder="Username" required>
+        <input id="email" type="email" placeholder="Email" required>
+        <input id="pword" type="password" placeholder="Password" required>
+        <input id="Cpword" type="password" placeholder="Confirm Password" required>
+        <div class="error-message"></div>
+        <button type="button" id="nextBtn1">Next</button>
+      </div>
+
+      <div id="step2" style="display: none;">
+        <div style="text-align: center; margin-bottom: 20px;">
+          <img id="profilePicPreview" src="" alt="Profile Picture Preview">
+        </div>
+        <label for="profilePic" id="profilePicLabel">Upload Profile Picture</label>
+        <input type="file" accept="image/*" id="profilePic">
+        <textarea id="bio" placeholder="Bio" rows="5"></textarea>
+        <div class="error-messages"></div>
+        <button type="button" id="prevBtn1">Previous</button>
+        <button type="button" id="skip">Skip</button>
+        <button type="button" id="nextBtn2">Next</button>
+      </div>
+
+      <div id="step3" style="display: none;">
+        <h3>Are you a publisher?</h3>
+        <div class="radio-group">
+          <label>
+            <input type="radio" name="isPublisher" value="1"> Yes
+          </label>
+          <label>
+            <input type="radio" name="isPublisher" value="0" checked> No
+          </label>
+        </div>
+        <button type="button" id="prevBtn2">Previous</button>
+        <button id="signup" type="button">Sign Up</button>
+      </div>
+    </form>
+  </div>
+
+  <script src="{% static 'js/signup.js' %}"></script>
+</body>
+</html>
+
     
-                     <div id="lastName">
-                        <span>
-                            <i class="fa fa-user"></i>
-                        </span>
-                        <input id="Lname" type="text" name="Lname" placeholder="Last Name">
-                     </div>
-    
-                    </div>
-    
-                    <div id="username-signup">
-                        <span>
-                            <i class="fa fa-user"></i>
-                        </span>
-                        <input id="Uname-signup" type="text" name="Uname" placeholder="Username" required>
-                    </div>
-                    
-                    <div id="email-content">
-                        <span>
-                            <i class="fa fa-envelope"></i>
-                        </span>
-                        <input id="email-input" name="Ename" type="text" placeholder="Email Address" required>
-                    </div>
-                    
-                    <div id="password-signup">
-                        <span>
-                            <i class="fa fa-key"></i>
-                        </span>
-                        <input id="Pword-signup" type="password" name="Pname" placeholder="Password" required> 
-                    </div>
-                    
-                    <div id="confirm-password">
-                        <span>
-                            <i class="fa fa-key"></i>
-                        </span>
-                        <input id="Cpword-signup" type="text" name="Cpname" placeholder="Confirm Password" required> 
-                    </div>
-                    <br>
-                    
-                    <div id="rememberMe-signup">
-                        <input id="rememberMeCheck" type="checkbox" value="rememberMe"> <label id="rememberMe" for="rememberMe"> Remember me</label>
-                    </div>
-                    
-                    <h5 id="or-text">OR</h5>
-                    
-                    <div id="google-signup">
-                        <button id="google-button-signup">
-                            <img id="google-icon" src="google icon.svg" height="18px" width="18px">
-                            Sign Up With Google
-                        </button>
-                        
-                        
-                    </div>
-                    
-                    
-                    <input id="submit-signup" type="submit" value="Sign Up" >
-                    
-                    <div id="have-an-acc">
-                        <h6 id="for-login">Already have an account? <a id="to-login" href="{% url 'login' %}">Log In</a> </h6>
-                    </div>
-                    
-                </form>
-                </div>
-           </div>
-    
-           <div class="popup-window">
-            <div id="popup-window-container">
-                <h4>Are you a publisher?</h4>
-                <form id="question-radio-buttons">
-                    <div class="radio-buttons" id="yes-radio"> 
-                        <input class="radio" type="radio" name="Publisher" >Yes
-                    </div>
-                     <div class="radio-buttons"  id="no-radio">
-                        <input class="radio" type="radio" name="Publisher" >No
-                     </div>
-                    
-                    </form> 
-                <input id="question-submit-button" type="button" value="Submit">
-            </div>
-           </div>
-           <script src="{% static 'js/signup.js'%}"></script>
-    </body>
-    </html>

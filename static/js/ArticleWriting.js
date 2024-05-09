@@ -65,21 +65,6 @@ categorySelect.addEventListener('change', (event) => {
   categoryNameElement.textContent = event.target.value;
 });
 
-// Set author's name (you can replace this with your desired logic)
-
-
-// Save draft functionality
-saveDraftButton.addEventListener('click', () => {
-  const draftData = {
-    thumbnail: articleThumbnailPreview.style.backgroundImage,
-    heading: articleHeadingInput.value,
-    category: categorySelect.value,
-    content: writingArea.innerHTML,
-  };
-
-  console.log('Draft saved:', draftData);
-});
-
 // Publish article functionality
 publishButton.addEventListener('click', () => {
   const file = thumbnailInput.files[0];

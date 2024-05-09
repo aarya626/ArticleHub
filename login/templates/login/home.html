@@ -6,6 +6,39 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>ArticleHub | Home</title>
+    <style>
+        .popular-cards-container {
+            display: flex;
+            /* Use flexbox layout */
+            flex-wrap: nowrap;
+            /* Prevent wrapping to next line */
+            overflow-x: auto;
+            /* Enable horizontal scrollbar if needed */
+            height: 450px;
+            /* Set the height of the container */
+            padding: 10px;
+            /* Add padding to the container */
+        }
+
+        .popular-cards-slide-conatiner {
+            flex: 0 0 auto;
+            /* Allow items to shrink if necessary */
+            margin-right: 50px;
+            /* Add margin between items */
+            /* Adjust width of each item as needed */
+            width: 250px;
+            /* z-index: 4; */
+        }
+
+        #popular-article-1 {
+            border: 1px solid #ccc;
+            /* Add border for better visualization */
+            border-radius: 5px;
+            /* Add border radius for rounded corners */
+            padding: 10px;
+            /* Add padding to the article */
+        }
+    </style>
     <link rel="stylesheet" href="{% static 'css/indexstyle.css' %}">
 
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
@@ -65,7 +98,7 @@
             </div>
             {% else %}
             <li id="signup">
-                <a id="signup-link" href="{% url 'login' %}">LogIn</a> 
+                <a id="signup-link" href="{% url 'login' %}">LogIn</a>
             </li> &nbsp; &nbsp; &nbsp;
             <li id="signup">
                 <a id="signup-link" href="{% url 'signup' %}">SignUp</a>
@@ -84,117 +117,76 @@
 
     <div class="popular-articles-sec">
         <div id="popular-head-div">
-            <h4 id="popular-articles-head">Popular This Week</h4>
+            <h4 id="popular-articles-head">Popular Articles</h4>
         </div>
-        {% for article in articles %}
-        <div class="popular-cards-slide-conatiner">
-            <a href="{% url 'articlepage' article.article_id %}" target="_blank">
-                <div id="popular-article-1">
-                    <div id="article-thumbnail" style="background-image: url({{article.thumbnail}});"></div>
-                    <ul id="article-text">
-                        <li id="cat-name">{{article.Category.category}}</li>
-                        <li id="article-head">{{article.title}}</li>
-                        <div id="authorName-and-like">
-                            <li id="authors-name">{{article.user.first_name}} {{article.user.last_name}}</li> <i id="like" class="fa fa-thumbs-up"></i>
+        <div class="popular-cards-container">
+            {% for article in articles %}
+            <div class="popular-cards-slide-conatiner">
+                <a href="{% url 'articlepage' article.article_id %}" target="_blank">
+                    <!-- <h1>{{article.bookmarked}}</h1> -->
+                    <div id="popular-article-1" class="relative">
+                        <div id="article-thumbnail" style="background-image: url({{article.thumbnail}});"
+                            class="relative">
+                            <div class="bookmark-container">
+                                <button id="bookmark-btn" class="bookmark-btn{{article.article_id}}" onclick="bookmarkArticle(event,{{ article.article_id }})">
+                                    {%if article.bookmarked %}
+                                    <i class="fa fa-bookmark bookmark-icon bookmarked"></i>
+                                    {%else%}
+                                    <i class="fa fa-bookmark bookmark-icon"></i>
+                                    {%endif%}
+                                </button>
+                            </div>
                         </div>
-                    </ul>
-                </div>
-            </a>
+                        <ul id="article-text">
+                            <li id="cat-name">{{article.Category.category}}</li>
+                            <li id="article-head">{{article.title}}</li>
+                            <div id="authorName-and-like">
+                                <li id="authors-name">{{article.user.first_name}} {{article.user.last_name}}</li>
+                                <i id="like" class="fa fa-thumbs-up">{{article.num_likes}}</i>
+                            </div>
+                        </ul>
+                    </div>
+                </a>
+            </div>
+            {% endfor %}
         </div>
-        {%endfor%}
-        </div>
-
-    <div class="menu-container">
-        <div id="menu-categories">
-            <ul id="written-categories">
-
-                <li><a id="main-categories" href="">Culture</a></li>
-                <li><a id="main-categories" href="">Psychology</a></li>
-                <li><a id="main-categories" href="">Health</a></li>
-                <li><a id="main-categories" href="">Entertainment</a></li>
-                <li><a id="main-categories" href="">Politics</a></li>
-                <li><a id="main-categories" href="">Technology</a></li>
-
-            </ul>
-
-            <div id="vl"></div>
-
-            <ul id="visual-categories">
-
-                <li><a id="side-categories" href="">Podcast <i id="" class="fa fa-podcast"></i></a></li>
-                <li><a id="side-categories" href="">Video <i id="" class="fa fa-photo-film"></i></a></li>
-                <li><a id="side-categories" href="">Art <i id="" class="fa fa-brush"></i></a></li>
-
-            </ul>
-
-        </div>
-
     </div>
 
     <div class="tech-category">
         <div id="tech-head-more">
-            <h4 id="tech-category-head">Technology <i id="drop-icon" class="fa fa-caret-down"></i></h4>
+            <select id="category-select">
+                <option value="0">All Categories</option>
+                {% for category in categories %}
+                <option value="{{ category.category_id }}">{{ category.category }}</option>
+                {% endfor %}
+            </select>
+            <!-- <h4 id="tech-category-head">Technology <i id="drop-icon" class="fa fa-caret-down"></i></h4> -->
             <a href="" id="view-more-tech">View more</a>
         </div>
 
-        <div id="line-break"></div>
-
+        <!-- <div id="line-break"></div> -->
         <div id="tech-articles">
 
-            <div id="popular-article-1">
-                <div id="article-thumbnail"></div>
-                <ul id="article-text">
-                    <li id="cat-name">Category name</li>
-                    <li id="article-head">Lorem ipsum, dolor sit amet consectetur adipisicing elit.</li>
-                    <div id="authorName-and-like">
-                        <li id="authors-name">Authors's Name</li> <i id="like" class="fa fa-thumbs-up">1k</i>
-                    </div>
 
-                </ul>
-            </div>
-            <div id="popular-article-1">
-                <div id="article-thumbnail"></div>
-                <ul id="article-text">
-                    <li id="cat-name">Category name</li>
-                    <li id="article-head">Lorem ipsum, dolor sit amet consectetur adipisicing elit.</li>
-                    <div id="authorName-and-like">
-                        <li id="authors-name">Authors's Name</li> <i id="like" class="fa fa-thumbs-up">1k</i>
-                    </div>
-
-                </ul>
-            </div>
-            <div id="popular-article-1">
-                <div id="article-thumbnail"></div>
-                <ul id="article-text">
-                    <li id="cat-name">Category name</li>
-                    <li id="article-head">Lorem ipsum, dolor sit amet consectetur adipisicing elit.</li>
-                    <div id="authorName-and-like">
-                        <li id="authors-name">Authors's Name</li> <i id="like" class="fa fa-thumbs-up">1k</i>
-                    </div>
-
-                </ul>
-            </div>
-            <div id="popular-article-1">
-                <div id="article-thumbnail"></div>
-                <ul id="article-text">
-                    <li id="cat-name">Category name</li>
-                    <li id="article-head">Lorem ipsum, dolor sit amet consectetur adipisicing elit.</li>
-                    <div id="authorName-and-like">
-                        <li id="authors-name">Authors's Name</li> <i id="like" class="fa fa-thumbs-up">1k</i>
-                    </div>
-
-                </ul>
-            </div>
-            <div id="popular-article-1">
-                <div id="article-thumbnail"></div>
-                <ul id="article-text">
-                    <li id="cat-name">Category name</li>
-                    <li id="article-head">Lorem ipsum, dolor sit amet consectetur adipisicing elit.</li>
-                    <div id="authorName-and-like">
-                        <li id="authors-name">Authors's Name</li> <i id="like" class="fa fa-thumbs-up">1k</i>
-                    </div>
-
-                </ul>
+            <div class="popular-cards-container" id="popular-cards-container">
+                {% for article in articles %}
+                <div class="popular-cards-slide-conatiner categories"
+                    data-category="{{ article.Category.category_id }}">
+                    <a href="{% url 'articlepage' article.article_id %}" target="_blank">
+                        <div id="popular-article-1">
+                            <div id="article-thumbnail" style="background-image: url({{article.thumbnail}});"></div>
+                            <ul id="article-text">
+                                <li id="cat-name">{{ article.Category.category }}</li>
+                                <li id="article-head">{{ article.title }}</li>
+                                <div id="authorName-and-like">
+                                    <li id="authors-name">{{ article.user.first_name }} {{ article.user.last_name }}
+                                    </li> <i id="like" class="fa fa-thumbs-up"></i>
+                                </div>
+                            </ul>
+                        </div>
+                    </a>
+                </div>
+                {% endfor %}
             </div>
 
 
@@ -304,6 +296,32 @@
         <h4 id="copyright-line"> &#169 2024 All rights are reserved. </h4>
     </div>
 
+    <div class="menu-container" style="display: none;">
+        <div id="menu-categories">
+            <ul id="written-categories">
+
+                <li><a id="main-categories" href="">Culture</a></li>
+                <li><a id="main-categories" href="">Psychology</a></li>
+                <li><a id="main-categories" href="">Health</a></li>
+                <li><a id="main-categories" href="">Entertainment</a></li>
+                <li><a id="main-categories" href="">Politics</a></li>
+                <li><a id="main-categories" href="">Technology</a></li>
+
+            </ul>
+
+            <div id="vl"></div>
+
+            <ul id="visual-categories">
+
+                <li><a id="side-categories" href="">Podcast <i id="" class="fa fa-podcast"></i></a></li>
+                <li><a id="side-categories" href="">Video <i id="" class="fa fa-photo-film"></i></a></li>
+                <li><a id="side-categories" href="">Art <i id="" class="fa fa-brush"></i></a></li>
+
+            </ul>
+
+        </div>
+
+    </div>
     <script src="{%static 'js/indexScript.js' %}"></script>
 </body>
 

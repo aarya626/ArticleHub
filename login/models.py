@@ -13,11 +13,19 @@ class Users(AbstractUser):
     username = models.CharField(max_length=50, unique=True)
     password = models.CharField(max_length=100)
     profile = models.CharField(max_length=200,null=False,default='/static/images/profile_pics/defaultpfpsvg.png')
-    bio = models.TextField(max_length=150,null=True)
+    bio = models.TextField(max_length=150,null=False,default='')
     is_publisher = models.BooleanField(default=False)
     created_at = models.DateTimeField(auto_now_add=True)
     class Meta:
         db_table = 'Users'
+
+
+class UserProfile(models.Model):
+    user = models.OneToOneField(Users, on_delete=models.CASCADE)
+    followers = models.ManyToManyField(Users, related_name='following', blank=True)
+
+    def __str__(self):
+        return self.user.username
 
 
 class Categories(models.Model):
@@ -38,6 +46,7 @@ class Articles(models.Model):
     other_pics = models.CharField(max_length=2000, null=True)
     likes = models.ManyToManyField(Users,related_name='likes')
     dislikes = models.ManyToManyField(Users,related_name='dislikes')
+    bookmark_by = models.ManyToManyField(Users, related_name='bookmarked_articles')
     created_at = models.DateTimeField(auto_now_add=True)
 
     class Meta:

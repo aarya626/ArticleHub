@@ -63,12 +63,13 @@
 
           </div>
         </div>
+        
         <div class="mic">
-          <i class="fa fa-microphone"></i>
+          <button type="button" id="speaker" style="border: none; background-color: transparent;"><i class="fa fa-microphone"></i></button>
         </div>
       </div>
       <div class="article-content">
-        <p style="white-space: pre-line;">{{article.content | safe }} </p>
+        <p id="articlecontent" style="white-space: pre-line;">{{article.content | safe }} </p>
 
       </div>
       <div class="article-actions">
@@ -87,12 +88,13 @@
       </div>
       <div class="comments-list"></div>
       </div>
+      <div class="google_translate"></div>
       <div class="comments-section">
         <h2>Comments</h2>
         <div class="comment-form">
           <textarea placeholder="Add a comment..."></textarea>
           <div>
-            <button class="submit-comment">Submit</button>
+            <button class="submit-comment" style="cursor: pointer;">Submit</button>
             <div id="emptyerror"></div>
           </div>
         </div>
@@ -108,14 +110,14 @@
             </div>
           </div>
           {% endfor %}
+        </div>
       </div>
-    </div>
     </article>
   </main>
   <!-- <footer>
 <p>&copy; 2024 Article Website. All rights reserved.</p>
 </footer> -->
-
+  <script src="http://translate.google.com/translate_a/element.js?cb=googleTranslator"></script>
   <script src="{% static 'js/articlepage.js'%}"></script>
 </body>
 
