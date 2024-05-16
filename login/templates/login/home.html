@@ -170,12 +170,15 @@
             {% endfor %}
         </div>
     </div>
-
+    
     <div class="psycho-category">
         <div id="psycho-head-more">
             <h4 id="psycho-category-head">Your Following</h4>
+            {% if user.is_authenticated %}
             <a href="{% url 'categories_show' 'following' %}" id="view-more-psycho">View more</a>
+            {%endif%}
         </div>
+
 
         <div id="line-break"></div>
 
