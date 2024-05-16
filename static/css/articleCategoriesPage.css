@@ -1,0 +1,161 @@
+*{
+    margin: 0;
+    padding: 0;
+}
+
+body{
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+
+.article-category-heading{
+    color: #2d0f52;
+    font-size: 2rem;
+    width: 100%;
+    text-align: center;
+    /* background-color: #113c67; */
+    margin: 2%;
+}
+
+.article-category-container{
+    padding-top: 2%;
+    margin: 2% 0 2% 0;
+    height: 100%;
+    width: 80%;
+    background-color: #e6e6ef;
+    display: flex;
+    justify-content: space-evenly;
+    flex-wrap: wrap;
+    /* flex-direction: row; */
+    border-radius: 2%;
+    text-decoration: none;
+}
+
+.article-category-container a{
+    text-decoration: none;
+}
+
+
+#article-thumbnail{
+    position: relative;
+    background-color: #9290C3;
+    height: 60%;
+    width: 100%;
+    margin: auto;
+    margin-top: -1px;
+    margin-bottom: 10px;
+    border-radius: 5px;
+    background-image: url(Newspapr_coffee.jpg);
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+
+#popular-article-1{
+    color: #113c67;
+    background-color: whitesmoke;
+    height: 350px;
+    width: 280px;
+    border-radius: 5px;
+    display: flex;
+    flex-wrap: wrap;
+    box-shadow: 0px 3px 10px rgb(37, 37, 37);
+    margin-top: -25px;
+    transition: 0.2s ease-in-out;
+    cursor: pointer;
+    transform: scale(0.9);
+    margin-bottom: 2%;
+}
+
+#popular-article-1:hover{
+    transform: translateY(-5px);
+    box-shadow: 0 4px 10px rgba(75, 39, 194, 9);
+
+}
+
+#article-text{
+    padding-left: 15px;
+}
+
+#cat-name{
+    margin-top: -18px;
+    list-style: none;
+    font-style: italic;
+    font-weight: lighter;
+    margin-bottom: 10px;
+    font-size: small;
+}
+
+/* #article-head{
+    list-style: none;
+    font-size: 18px;
+    font-weight: bold;
+    margin-bottom: 10px;
+} */
+
+#article-head {
+    list-style: none;
+    font-size: 18px;
+    font-weight: bold;
+    margin-bottom: 10px;
+    word-wrap: break-word; /* word-wrap and overflow-wrap properties ensure that long words will break and wrap onto the next line, preventing them from overflowing the container.*/
+    overflow-wrap: break-word;
+    max-height: 3.6em; /* Adjust this value based on your desired number of lines */
+    line-height: 1.2em; /* Adjust this value based on your font size */
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-line-clamp: 3; /* Adjust this value based on your desired number of lines */
+    -webkit-box-orient: vertical;
+}
+
+#authors-name{
+    list-style: none;
+    font-size: small;
+}
+
+#authorName-and-like{
+   display: flex;
+   justify-content: space-between;
+}
+
+#like{
+    margin-right: 20px;
+    color: #113c67;
+    fill: none;
+
+}
+.bookmark-container {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+}
+
+#bookmark-btn {
+    background-color: transparent;
+    border: none;
+    padding: 8px;
+    font-size: 34px;
+    cursor: pointer;
+    transition: transform 0.3s ease;
+}
+
+#bookmark-btn:hover {
+    transform: scale(1.2);
+}
+
+.bookmark-icon {
+    color: #ff5e57; /* Reddish-pink color for the default bookmark icon */
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
+    transition: transform 0.3s ease, color 0.3s ease;
+}
+
+#bookmark-btn:hover .bookmark-icon {
+    transform: rotate(360deg);
+    color: #ff5e57; 
+}
+
+.bookmark-icon.bookmarked {
+    color: #00d8d6; 
+    text-shadow: none;
+}

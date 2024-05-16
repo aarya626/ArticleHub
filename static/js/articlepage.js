@@ -15,70 +15,70 @@ const commentBtnEl = document.querySelector('.submit-comment')
 
 // Like and dislike functionality
 likeBtnEl.addEventListener('click', () => {
-  if(checkuser === 'AnonymousUser'){
-    window.location.href = `/login`;  
+  if (checkuser === 'AnonymousUser') {
+    window.location.href = `/login`;
   } else {
     fetch(`/articlepage/${article_id}/`, {
       method: 'POST',
-      headers:{
+      headers: {
         'X-action': 'like'
       }
     })
-    .then(response => response.json())
-    .then(data => {
-      likeCountEl.textContent = data.likes_count;
-      dislikeCountEl.textContent = data.dislikes_count;
-    })
-    .catch(error => {
-      console.log("Error:", error);
-    });
+      .then(response => response.json())
+      .then(data => {
+        likeCountEl.textContent = data.likes_count;
+        dislikeCountEl.textContent = data.dislikes_count;
+      })
+      .catch(error => {
+        console.log("Error:", error);
+      });
   }
 });
 
 
 dislikeBtnEl.addEventListener('click', () => {
-  if(checkuser === 'AnonymousUser'){
-    window.location.href = `/login`;  
+  if (checkuser === 'AnonymousUser') {
+    window.location.href = `/login`;
   } else {
     fetch(`/articlepage/${article_id}/`, {
       method: 'POST',
-      headers:{
+      headers: {
         'X-action': 'dislike'
       }
     })
-    .then(response => response.json())
-    .then(data => {
-      likeCountEl.textContent = data.likes_count;
-      dislikeCountEl.textContent = data.dislikes_count;
-    })
-    .catch(error => {
-      console.log("Error: ", error);
-    });
+      .then(response => response.json())
+      .then(data => {
+        likeCountEl.textContent = data.likes_count;
+        dislikeCountEl.textContent = data.dislikes_count;
+      })
+      .catch(error => {
+        console.log("Error: ", error);
+      });
   }
 });
 
 
 
 // Comment functionality
-commentBtnEl.addEventListener('click', ()=>{
+commentBtnEl.addEventListener('click', () => {
   const comment = commentFormEl.querySelector('textarea').value;
-  if (comment==''){
+  if (comment == '') {
     document.getElementById('emptyerror').innerHTML = '<p>Please enter a message.</p>'
     return;
   }
   const commentdata = new FormData();
-  commentdata.append('comment',comment);
+  commentdata.append('comment', comment);
   fetch(`/articlepage/${article_id}/`, {
     method: 'POST',
-    headers:{
+    headers: {
       'X-action': 'comment'
     },
     body: commentdata
   })
-  .then(response => response.json())
-  .then(data => {
-    commentFormEl.querySelector('textarea').value = '';
-    document.getElementById('newcomment').innerHTML = `<div class="comment">
+    .then(response => response.json())
+    .then(data => {
+      commentFormEl.querySelector('textarea').value = '';
+      document.getElementById('newcomment').innerHTML = `<div class="comment">
     <img src="${data.profile}" class="comment-avatar">
     <div class="comment-details">
       <h3 class="comment-author">${data.username}</h3>
@@ -86,35 +86,75 @@ commentBtnEl.addEventListener('click', ()=>{
       <p class="comment-content">${comment}</p>
     </div>
   </div>`
-  })
-  .catch(error => {
-    console.log("Error: ", error);
-  });
+    })
+    .catch(error => {
+      console.log("Error: ", error);
+    });
 })
+const playButton = document.getElementById('speaker');
+const articleContent = document.getElementById('articlecontent');
+let speechSynthesis = window.speechSynthesis;
+let speechUtterance = new SpeechSynthesisUtterance();
 
-
-const mic = document.querySelector('#speaker');
-mic.addEventListener('click',()=>{
-  // console.log('clicked');
-  let text = document.getElementById("articlecontent").textContent;
-    
-    // Create a new instance of SpeechSynthesisUtterance
-    let utterance = new SpeechSynthesisUtterance(text);
-    
-    // Optionally, you can specify voice options
-    utterance.lang = 'en-US'; // Set the language
-    // utterance.voice = speechSynthesis.getVoices().find(voice => voice.name === 'Google US English'); // Specify a specific voice (optional)
-
-    // Speak the text
-    speechSynthesis.speak(utterance);
-})
+playButton.addEventListener('click', () => {
+  let content = articleContent.textContent;
+  if (content) {
+    speechUtterance.text = content;
+    speechSynthesis.speak(speechUtterance);
+  }
+});
 
 // Share functionality
 // shareBtnEl.addEventListener('click', () => {
-  // Implement share functionality (e.g., open a sharing dialog, copy the URL)
-  // console.log('Share button clicked');
+// Implement share functionality (e.g., open a sharing dialog, copy the URL)
+// console.log('Share button clicked');
 // });
 
-function googleTranslator(){
+function googleTranslator() {
   new google.translate.TranslateElement("google_translate");
 }
+
+
+const shareBtn = document.querySelector('.share-btn');
+const shareDiv = document.querySelector('.share-div');
+
+shareBtn.addEventListener('click', toggleShareDiv);
+
+function toggleShareDiv() {
+  if (shareDiv.style.visibility === 'hidden') {
+    shareDiv.style.visibility = 'visible';
+    document.addEventListener('click', hideShareDivOutside);
+  } else {
+    shareDiv.style.visibility = 'hidden';
+    document.removeEventListener('click', hideShareDivOutside);
+  }
+}
+
+function hideShareDivOutside(event) {
+  const isClickInsideShareDiv = shareDiv.contains(event.target);
+  const isClickInsideShareBtn = shareBtn.contains(event.target);
+
+  if (!isClickInsideShareDiv && !isClickInsideShareBtn) {
+    shareDiv.style.visibility = 'hidden';
+    document.removeEventListener('click', hideShareDivOutside);
+  }
+}
+
+document.getElementById("copy-url-btn").addEventListener("click", function() {
+  var urlField = document.getElementById("url-field");
+  urlField.select();
+  document.execCommand("copy");
+
+  // Create a new popup element
+  var popup = document.createElement("div");
+  popup.className = "popup";
+  popup.textContent = "URL copied to clipboard";
+
+  // Append the popup to the document body
+  document.body.appendChild(popup);
+
+  // Remove the popup after 3 seconds
+  setTimeout(function() {
+    popup.remove();
+  },500);
+});

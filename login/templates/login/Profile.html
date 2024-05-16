@@ -28,7 +28,20 @@
                 <p class="bio" id="bio" value="bio">{{profile_user.bio}}</p>
             </div>
         </header>
-
+        <div id="social-media-icon-div">
+            {% if social_user.instagram %}
+            <a id="instasocial" href="{{social_user.instagram}}" style="display: block;" target="_blank"><i class="fa fa-instagram"></i></a>
+            {% endif %}
+            {% if social_user.facebook %}
+            <a id="fb" href="{{social_user.facebook}}" style="display: block;" target="_blank"><i class="fa fa-facebook"></i></a>
+            {% endif %}
+            {% if social_user.twitter %}
+            <a id="twittersocial" href="{{social_user.twitter}}" style="display: block;" target="_blank"><i class="fa fa-twitter"></i></a>
+            {% endif %}
+            {% if social_user.email %}
+            <a id="mail" href="{{social_user.email}}" style="display: block;" target="_blank"><i class="fa fa-envelope"></i></a>
+            {% endif %}
+        </div>
         <div class="user-analytics">
             <ul>
                 <li id="followers-num">
@@ -71,20 +84,34 @@
         </nav>
 
         <main>
+            <h1 id="usernametodeletearticle" style="display: none;">{{user.username}}</h1>
             <div class="tab-content" id="reading-list">
                 <div class="popular-cards-container" id="popular-cards-container">
                     {% for article in bookmarked_articles %}
                     <div class="popular-cards-slide-conatiner categories"
                         data-category="{{ article.Category.category_id }}">
-                        <a href="{% url 'articlepage' article.article_id %}" target="_blank">
+                        <a href="{% url 'articlepage' article.article_id %}" target="_blank"
+                            style="text-decoration: none; color: black;">
                             <div id="popular-article-1">
-                                <div id="article-thumbnail" style="background-image: url({{article.thumbnail}});"></div>
+                                <div id="article-thumbnail" style="background-image: url({{article.thumbnail}});">
+                                    {%if user.is_authenticated %}
+                                    <div class="bookmark-container">
+                                        <button id="bookmark-btn" class="bookmark-btn{{article.article_id}}"
+                                            onclick="bookmarkArticle(event,{{article.article_id}})">
+                                            {%if article.bookmarked %}
+                                            <i class="fa fa-bookmark bookmark-icon bookmarked"></i>
+                                            {%else%}
+                                            <i class="fa fa-bookmark bookmark-icon"></i>
+                                            {%endif%}
+                                        </button>
+                                    </div>
+                                    {%endif%}</div>
                                 <ul id="article-text">
                                     <li id="cat-name">{{ article.Category.category }}</li>
                                     <li id="article-head">{{ article.title }}</li>
                                     <div id="authorName-and-like">
                                         <li id="authors-name">{{ article.user.first_name }} {{ article.user.last_name }}
-                                        </li> <i id="like" class="fa fa-thumbs-up"></i>
+                                        </li> {{article.num_likes}} Likes
                                     </div>
                                 </ul>
                             </div>
@@ -98,16 +125,42 @@
                 <div class="popular-cards-container" id="popular-cards-container">
                     {% for article in published_articles %}
                     <div class="popular-cards-slide-conatiner categories"
-                        data-category="{{ article.Category.category_id }}">
-                        <a href="{% url 'articlepage' article.article_id %}" target="_blank">
+                        data-category="{{ article.Category.category_id }}" data-article="{{article.article_id}}">
+                        <a href="{% url 'articlepage' article.article_id %}" target="_blank"
+                            style="text-decoration: none; color: black;">
                             <div id="popular-article-1">
-                                <div id="article-thumbnail" style="background-image: url({{article.thumbnail}});"></div>
+                                <div id="article-thumbnail" style="background-image: url({{article.thumbnail}});">
+                                    {%if user == profile_user%}
+                                    <button class="bin-button" onclick="deletearticle(event,{{article.article_id}})">
+                                        <svg class="bin-top" viewBox="0 0 39 7" fill="none"
+                                            xmlns="http://www.w3.org/2000/svg">
+                                            <line y1="5" x2="39" y2="5" stroke="white" stroke-width="4"></line>
+                                            <line x1="12" y1="1.5" x2="26.0357" y2="1.5" stroke="white"
+                                                stroke-width="3"></line>
+                                        </svg>
+                                        <svg class="bin-bottom" viewBox="0 0 33 39" fill="none"
+                                            xmlns="http://www.w3.org/2000/svg">
+                                            <mask id="path-1-inside-1_8_19" fill="white">
+                                                <path
+                                                    d="M0 0H33V35C33 37.2091 31.2091 39 29 39H4C1.79086 39 0 37.2091 0 35V0Z">
+                                                </path>
+                                            </mask>
+                                            <path
+                                                d="M0 0H33H0ZM37 35C37 39.4183 33.4183 43 29 43H4C-0.418278 43 -4 39.4183 -4 35H4H29H37ZM4 43C-0.418278 43 -4 39.4183 -4 35V0H4V35V43ZM37 0V35C37 39.4183 33.4183 43 29 43V35V0H37Z"
+                                                fill="white" mask="url(#path-1-inside-1_8_19)"></path>
+                                            <path d="M12 6L12 29" stroke="white" stroke-width="4"></path>
+                                            <path d="M21 6V29" stroke="white" stroke-width="4"></path>
+                                        </svg>
+                                    </button>
+                                    {%endif%}
+                                </div>
                                 <ul id="article-text">
                                     <li id="cat-name">{{ article.Category.category }}</li>
                                     <li id="article-head">{{ article.title }}</li>
                                     <div id="authorName-and-like">
                                         <li id="authors-name">{{ article.user.first_name }} {{ article.user.last_name }}
-                                        </li> <i id="like" class="fa fa-thumbs-up"></i>
+                                        </li> {{article.num_likes}} Likes</li>
+
                                     </div>
                                 </ul>
                             </div>
@@ -123,69 +176,57 @@
 
             <div class="tab-content" id="settings">
                 <div class="user-setting-container">
-                    <form action="" class="user-setting-form-container">
+                    <div class="user-setting-form-container">
                         <ul>
                             <li>
-                                <div>Name :</div>
-                                <input class="input-user-text" id="name" type="text" value="Name" placeholder="Name">
+                                <!-- <div></div> -->
+                                <input class="input-user-text" id="firstname" type="text" placeholder="First Name">
                             </li>
                             <li>
-                                <div>Username :</div>
-                                <input class="input-user-text" id="user-name" type="text" value="Username"
-                                    placeholder="Username">
+                                <!-- <div>Last Name :</div> -->
+                                <input class="input-user-text" id="lastname" type="text" placeholder="Last Name">
                             </li>
                             <li>
-                                <div>Bio :</div>
-                                <input class="input-user-text" id="bio-input" type="text" value="Bio" placeholder="Bio">
+                                <!-- <div>Bio :</div> -->
+                                <input class="input-user-text" id="bio-input" type="text" placeholder="Bio">
                             </li>
                             <li>
-                                <div>Gender :</div>
-                                <input class="input-user-text" id="gender" type="text" value="Gender"
-                                    placeholder="Gender">
+                                <!-- <div>Username :</div> -->
+                                <input class="input-user-text" id="user-name" type="text" placeholder="Username">
+                            </li>
+                            <li>
+                                <!-- <div>Email :</div> -->
+                                <input class="input-user-text" id="gender" type="text" placeholder="Email">
                             </li>
                         </ul>
-                    </form>
-                </div>
-
-                <div class="social-media-links-container">
-                    <h5>
-                        Social media links
-                    </h5>
-                    <div id="social-media-icon-div">
-                        <i class="fa fa-instagram"></i>
-                        <i class="fa fa-facebook"></i>
-                        <i class="fa fa-twitter"></i>
-                        <i class="fa fa-envelope"></i>
+                        <button type="submit" class="submit-button" onclick="handleFormSubmission()">Submit</button>
                     </div>
-
                 </div>
-
-                <!-- <div class="about-user-container">
-                <h4>ABOUT</h4>
-                <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Quaerat dolor similique officia illum explicabo aliquam iste laudantium, neque nostrum veritatis corrupti reprehenderit omnis aliquid nam nobis numquam voluptatibus commodi maiores.</p>
-            </div> -->
-
+                <div class="social-media-links-container">
+                    <h5>Social media links</h5>
+                    <div id="social-media-icon-div">
+                        <i class="fa fa-instagram" onclick="addsocialmedia('Instagram')"></i>
+                        <i class="fa fa-facebook" onclick="addsocialmedia('Facebook')"></i>
+                        <i class="fa fa-twitter" onclick="addsocialmedia('Twitter')"></i>
+                        <i class="fa fa-envelope" onclick="addsocialmedia('Email')"></i>
+                    </div>
+                </div>
             </div>
-
-            <!-- <div class="tab-content" id="drafts">
-           
-          </div>
-          
-          <div class="tab-content" id="analytics">
-            
-          </div> -->
         </main>
     </div>
-
-    <!-- <div class="popup-window-link">
+    <div class="instagram-popup-window-link">
         <div id="popup-window-link-container">
-            <h4><i class="fa fa-instagram"></i>Instagram</h4>
-            <div id="add-link-container">
-                <input type="url" placeholder="Add link" autofocus>
-            </div> 
-            <input id="add-link-submit-button" type="button" value="Done">
+            <h4 id="insta"></h4>
+            <div id="instagram-add-link-container">
+                <input id="inputsocial" type="url" placeholder="Add link" autofocus>
+            </div>
+            <div id="error-message" style="display: none; color: red;"></div>
+
+            <input id="add-link-submit-button" type="button" value="Add" onclick="addLink()">
+            <input id="add-link-submit-button" type="button" value="Cancel" onclick="cancelLink()">
+
         </div>
-       </div> -->
+    </div>
 
     <script src="{%static 'js/ProfileScript.js' %}"></script>
 </body>

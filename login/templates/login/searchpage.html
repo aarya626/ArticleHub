@@ -1,0 +1,111 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Searched Result</title>
+    <link rel="stylesheet" href="{% static 'css/articleCategoriesPage.css' %}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+</head>
+
+<body>
+    <div class="article-category-heading">
+        <h3>Search Results for '{{search_query   }}'</h3>
+    </div>
+
+    <div class="article-category-container">
+        
+        {% for article in articles %}
+        <div class="popular-cards-slide-conatiner categories"
+            data-category="{{ article.Category.category_id }}">
+            <a href="{% url 'articlepage' article.article_id %}" target="_blank">
+                <div id="popular-article-1">
+                    <div id="article-thumbnail" style="background-image: url({{article.thumbnail}});"
+                        class="relative">
+                        {%if user.is_authenticated %}
+                        <div class="bookmark-container">
+                            <button id="bookmark-btn" class="bookmark-btn{{article.article_id}}"
+                                onclick="bookmarkArticle(event,{{article.article_id}})">
+                                {%if article.bookmarked %}
+                                <i class="fa fa-bookmark bookmark-icon bookmarked"></i>
+                                {%else%}
+                                <i class="fa fa-bookmark bookmark-icon"></i>
+                                {%endif%}
+                            </button>
+                        </div>
+                        {%endif%}
+                    </div>
+                    <ul id="article-text">
+                        <li id="cat-name">{{ article.Category.category }}</li>
+                        <li id="article-head">{{ article.title }}</li>
+                        <div id="authorName-and-like">
+                            <li id="authors-name">{{ article.user.first_name }} {{ article.user.last_name }}
+                            </li>{{article.num_likes}} Likes
+
+                        </div>
+                    </ul>
+                </div>
+            </a>
+        </div>
+        {% endfor %}
+
+        {% for article in authors_articles %}
+        <div class="popular-cards-slide-conatiner categories"
+            data-category="{{ article.Category.category_id }}">
+            <a href="{% url 'articlepage' article.article_id %}" target="_blank">
+                <div id="popular-article-1">
+                    <div id="article-thumbnail" style="background-image: url({{article.thumbnail}});"
+                        class="relative">
+                        {%if user.is_authenticated %}
+                        <div class="bookmark-container">
+                            <button id="bookmark-btn" class="bookmark-btn{{article.article_id}}"
+                                onclick="bookmarkArticle(event,{{article.article_id}})">
+                                {%if article.bookmarked %}
+                                <i class="fa fa-bookmark bookmark-icon bookmarked"></i>
+                                {%else%}
+                                <i class="fa fa-bookmark bookmark-icon"></i>
+                                {%endif%}
+                            </button>
+                        </div>
+                        {%endif%}
+                    </div>
+                    <ul id="article-text">
+                        <li id="cat-name">{{ article.Category.category }}</li>
+                        <li id="article-head">{{ article.title }}</li>
+                        <div id="authorName-and-like">
+                            <li id="authors-name">{{ article.user.first_name }} {{ article.user.last_name }}
+                            </li>{{article.num_likes}} Likes
+
+                        </div>
+                    </ul>
+                </div>
+            </a>
+        </div>
+        {% endfor %}
+    </div>
+    <script>
+        function bookmarkArticle(event, articleId) {
+    const bookmarkBtns = document.querySelectorAll(`.bookmark-btn${articleId}`);
+    event.preventDefault();
+    bookmarkBtns.forEach(bookmarkBtn => {
+        const bookmarkIcon = bookmarkBtn.querySelector('.bookmark-icon');
+        bookmarkIcon.classList.toggle('bookmarked');
+    });
+
+    const formdata = new FormData()
+    formdata.append('articleId',articleId)
+    fetch('/',{method:'POST',body:formdata})
+    .then(response=>response.json())
+    .then(data=>{
+        console.log("success");
+    })
+    .catch(error=>{
+        console.log('ERROR: ',error);
+    })
+}
+    </script>
+</body>
+
+</html>

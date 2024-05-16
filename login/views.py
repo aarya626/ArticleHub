@@ -1,13 +1,13 @@
 import json
 from django.http import JsonResponse
-from django.db.models import Count
+from django.db.models import Count, Q
 from django.urls import reverse
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib import messages
-from django.contrib.auth import authenticate, login
+from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.hashers import make_password
 from django.core.files.storage import default_storage
-from .models import Users, Articles, Categories, Comments, UserProfile
+from .models import Users, Articles, Categories, Comments, UserProfile, SocialMedia
 from .templatetags.login_extras import simplify_timesince
 from django.utils.datastructures import MultiValueDictKeyError
 from django.contrib.auth.decorators import login_required
@@ -18,27 +18,43 @@ from django.contrib.auth.decorators import login_required
 def home(request):
     articles = Articles.objects.select_related(
         'Category', 'user').annotate(num_likes=Count('likes')).order_by('-num_likes')[:10]
+    categories_articles = Articles.objects.select_related(
+        'Category', 'user').annotate(num_likes=Count('likes')).order_by('-created_at')
     for article in articles:
-        article.bookmarked = article.bookmark_by.filter(pk=request.user.pk).exists()
+        article.bookmarked = article.bookmark_by.filter(
+            pk=request.user.pk).exists()
+    for article in categories_articles:
+        article.bookmarked = article.bookmark_by.filter(
+            pk=request.user.pk).exists()
     categories = Categories.objects.all()
+    user = request.user
     context = {
         'articles': articles,
         'categories': categories,
-        # 'likes': articles.num_likes,
-        # 'dislikes': article.dislikes.count(),
+        'categories_articles': categories_articles
     }
+    if user.is_authenticated:
+        user_profile, _ = UserProfile.objects.get_or_create(user=user)
+        followed_users_profiles = user_profile.user.following.all()
+        followed_users = [profile.user for profile in followed_users_profiles]
+        following_articles = Articles.objects.filter(
+            user__in=followed_users).annotate(num_likes=Count('likes'))
+        context['following_articles'] = following_articles
     if request.method == 'POST':
-        user = request.user
-        article_id = request.POST.get('articleId')
-        article = Articles.objects.get(article_id=article_id)
-        # print(article.title)
-        if user in article.bookmark_by.all():
-            article.bookmark_by.remove(user)
-            bookmarked = False
+        if request.headers.get('X-action') == 'logout':
+            logout(request)
+            return JsonResponse({'success': 'success'})
         else:
-            article.bookmark_by.add(user)
-            bookmarked = True
-        return JsonResponse({'bookmarked': bookmarked})
+            user = request.user
+            article_id = request.POST.get('articleId')
+            article = Articles.objects.get(article_id=article_id)
+            if user in article.bookmark_by.all():
+                article.bookmark_by.remove(user)
+                bookmarked = False
+            else:
+                article.bookmark_by.add(user)
+                bookmarked = True
+            return JsonResponse({'bookmarked': bookmarked})
 
     return render(request, 'login/home.html', context)
 
@@ -96,10 +112,16 @@ def profile_view(request, username):
     profile_user = Users.objects.get(username=username)
     profile_followers, _ = UserProfile.objects.get_or_create(user=profile_user)
     isfollowing = profile_followers.followers.filter(pk=user.user_id).exists()
-    bookmarked_articles = Articles.objects.filter(bookmark_by=profile_user.user_id)
-    published_articles = Articles.objects.filter(user_id=profile_user.user_id)
-    # for article in bookmarked_articles:
-        # print(article.title)
+    bookmarked_articles = Articles.objects.filter(
+        bookmark_by=profile_user.user_id).annotate(num_likes=Count('likes'))
+    for article in bookmarked_articles:
+        article.bookmarked = article.bookmark_by.filter(
+            pk=request.user.pk).exists()
+    published_articles = Articles.objects.filter(
+        user_id=profile_user.user_id).annotate(num_likes=Count('likes'))
+    social_user, _ = SocialMedia.objects.get_or_create(
+        user_id=profile_user.user_id)
+    print(user.user_id)
     context = {
         'profile_user': profile_user,
         'user': user,
@@ -107,17 +129,71 @@ def profile_view(request, username):
         'following': profile_followers.user.following.count(),
         'isfollowing': isfollowing,
         'bookmarked_articles': bookmarked_articles,
-        'published_articles':published_articles
+        'published_articles': published_articles,
+        'social_user': social_user
     }
     if request.method == 'POST':
-        if profile_followers.followers.filter(pk=user.user_id).exists():
-            profile_followers.followers.remove(user)
-            isFollowing = False
-        else:
-            profile_followers.followers.add(user)
-            isFollowing = True
+        action = request.headers.get('X-action')
+        # print(action)
+        if action == 'deletearticle':
+            article_id = request.POST.get('articleId')
+            # print(article_id)
+            article = Articles.objects.get(article_id=article_id)
+            # print(article)
+            article.delete()
+            return JsonResponse({'success': 'success'})
+        elif action == 'updatepfp':
+            image = request.FILES['pfp']
+            profile = default_storage.save(
+                'static/images/profile_pics/' + image.name, image)
+            profile = '/' + profile
+            # print(profile)
+            userpfp = Users.objects.get(username=request.user)
+            userpfp.profile = profile
+            userpfp.save()
+            return JsonResponse({'success': 'success'})
+        elif action == 'updateprofile':
+            # print('bsbjfbsfhbbfebdkj')
+            data = json.loads(request.body)
 
-        return JsonResponse({'isFollowing': isFollowing, 'followers': profile_followers.followers.count(), 'following': profile_followers.user.following.count(), })
+            user = Users.objects.get(username=request.user)
+            if 'firstname' in data:
+                user.firstname = data['firstname']
+            if 'lastname' in data:
+                user.lastname = data['lastname']
+            if 'bio' in data:
+                user.bio = data['bio']
+            if 'username' in data:
+                user.username = data['username']
+            if 'email' in data:
+                user.email = data['email']
+
+            user.save()
+
+            return JsonResponse({'message': 'User details updated successfully'})
+        elif action == 'addlinks':
+            link = request.POST.get('link')
+            name = request.POST.get('socialmedia_name')
+            user, _ = SocialMedia.objects.get_or_create(user=request.user)
+            if name == 'fb':
+                user.facebook = link
+            if name == 'instasocial':
+                user.instagram = link
+            if name == 'twittersocial':
+                user.twitter = link
+            if name == 'mail':
+                user.email = link
+            user.save()
+            return JsonResponse({'success': 'success'})
+        elif action == 'follow':
+            if profile_followers.followers.filter(pk=user.user_id).exists():
+                profile_followers.followers.remove(user)
+                isFollowing = False
+            else:
+                profile_followers.followers.add(user)
+                isFollowing = True
+
+            return JsonResponse({'isFollowing': isFollowing, 'followers': profile_followers.followers.count(), 'following': profile_followers.user.following.count(), })
     return render(request, "login/Profile.html", context)
 
 
@@ -195,3 +271,81 @@ def article_publish(request):
         return JsonResponse({'id': article.article_id})
 
     return render(request, "login/articlewriting.html")
+
+
+def aboutus(request):
+    return render(request, 'login/about.html')
+
+
+def privacy(request):
+    return render(request, 'login/privacy.html')
+
+
+def delete_account(request):
+    if request.method == 'POST':
+        password = request.POST.get('password')
+        # Authenticate the user with the provided password
+        user = authenticate(
+            request, username=request.user.username, password=password)
+        if user:
+            # Delete the user account
+            user.delete()
+
+            # Logout the user
+            logout(request)
+
+            return JsonResponse({'success': True})
+        else:
+            return JsonResponse({'error': 'Incorrect password'})
+    return render(request, 'login/deleteaccount.html')
+
+
+def change_password(request):
+    if request.method == 'POST':
+        password = request.POST.get('oldpassword')
+        newpassword = request.POST.get('password')
+        user = authenticate(
+            request, username=request.user.username, password=password)
+        user_db = Users.objects.get(username=request.user)
+        if user:
+            newpassword = make_password(newpassword)
+            user_db.password = newpassword
+            user_db.save()
+            login(request, user_db)
+            return JsonResponse({'success': 'Password changed successfully'})
+        else:
+            return JsonResponse({'Error': 'error'})
+
+    return render(request, 'login/changeyourpassword.html')
+
+
+def categories_show(request, category):
+    category_id = Categories.objects.get(category=category).category_id
+    articles = Articles.objects.select_related(
+        'Category', 'user').filter(Category=category_id).all().annotate(num_likes=Count('likes')).order_by('-created_at')
+    for article in articles:
+        article.bookmarked = article.bookmark_by.filter(
+            pk=request.user.pk).exists()
+    context = {
+        'articles': articles,
+        'name': category
+    }
+    return render(request, "login/articleCategoriesPage.html", context)
+
+
+def search_result(request):
+    search_query = request.GET.get('search')
+    print(search_query)
+    articles = Articles.objects.select_related(
+        'Category', 'user').filter(title__icontains=search_query).all().annotate(num_likes=Count('likes')).order_by('-created_at')
+    users = Users.objects.filter(username__icontains=search_query)
+    user = [author.user_id for author in users]
+    print(user)
+    authors_articles = Articles.objects.select_related('user').filter(user__in=user).all().annotate(num_likes=Count('likes')).order_by('-created_at')
+    print(authors_articles)
+    context = {
+        'articles': articles,
+        'authors_articles': authors_articles,
+        'search_query': search_query
+    }
+    return render(request, 'login/searchpage.html', context)

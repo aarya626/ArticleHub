@@ -62,3 +62,14 @@ class Comments(models.Model):
 
     class Meta:
         db_table = 'Comments'
+
+
+class SocialMedia(models.Model):
+    user = models.OneToOneField(Users, on_delete=models.CASCADE)
+    facebook = models.CharField(max_length=100, null=True)
+    twitter = models.CharField(max_length=100, null=True)
+    instagram = models.CharField(max_length=100, null=True)
+    email = models.EmailField(max_length=100, null=True)
+
+    class Meta:
+        db_table = 'SocialMedia'

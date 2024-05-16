@@ -12,60 +12,28 @@
 </head>
 
 <body>
-  <!-- <header>
-        <div class="header-container">
-          <a href="#" class="logo">
-            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">
-              <defs>
-                <linearGradient id="gradient" x1="0%" y1="0%" x2="100%" y2="100%">
-                  <stop offset="0%" stop-color="#3f51b5" />
-                  <stop offset="100%" stop-color="#2c3e50" />
-                </linearGradient>
-              </defs>
-              <g transform="translate(25, 20)">
-                <path d="M25,0 L50,50 L0,50 Z" fill="url(#gradient)" />
-                <text x="25" y="35" text-anchor="middle" fill="#fff" font-family="Montserrat, sans-serif" font-size="22" font-weight="700">AH</text>
-              </g>
-            </svg>
-          </a>
-          <nav>
-            <div class="search-bar">
-              <input type="text" placeholder="Search articles..." />
-              <button type="submit">
-                <i class="fas fa-search"></i>
-              </button>
-            </div>
-            <ul>
-              <li><a href="#">Home</a></li>
-              <li><a href="#">Articles</a></li>
-              <li><a href="#">About</a></li>
-              <li><a href="#">Contact</a></li>
-            </ul>
-          </nav>
-        </div>
-      </header> -->
-      
-      <main>
-        <article>
-          <h6 id="article_id" style="display: none;">{{article.article_id}}</h6>
-          <h6 id="checkuser" style="display: none;">{{user}}</h6>
-      <h1>{{article.title}}</h1>
+  <main>
+    <article>
+      <h6 id="article_id" style="display: none;">{{article.article_id}}</h6>
+      <h6 id="checkuser" style="display: none;">{{user}}</h6>
+      <h1 id="heading_text">{{article.title}}</h1>
       <div class="article-header">
         <div class="author-info">
           <a href="{% url 'profile' article.user.username %}">
-          <img src="{{profile}}" alt="Author Avatar">
-        </a>
-          <div>
-            <a href="{% url 'profile' article.user.username %}" style="text-decoration: none;" >
-            <h2 >{{author}}</h2>
+            <img src="{{profile}}" alt="Author Avatar">
           </a>
+          <div>
+            <a href="{% url 'profile' article.user.username %}" style="text-decoration: none;">
+              <h2>{{author}}</h2>
+            </a>
             <p>Published on: {{article.created_at}}</p>
 
           </div>
         </div>
-        
+
         <div class="mic">
-          <button type="button" id="speaker" style="border: none; background-color: transparent;"><i class="fa fa-microphone"></i></button>
+          <button type="button" id="speaker" style="border: none; background-color: transparent;"><i
+              class="fa fa-play"></i></button>
         </div>
       </div>
       <div class="article-content">
@@ -86,6 +54,21 @@
           Share
         </button>
       </div>
+        <div class="share-div-background">
+          <div class="share-div">
+            <div class="copy-url-div">
+              <input id="url-field" type="url" value="https://www.articlehub.com/articlepage/{{article.article_id}}" placeholder="link" readonly>
+              <button id="copy-url-btn" style="cursor: pointer;">Copy URL <i class="fa fa-copy"></i></button>
+            </div>
+            <!-- <ul id="social-media-share">
+              <i class="fa fa-instagram"></i>
+              <i class="fa fa-facebook"></i>
+              <i class="fa fa-twitter"></i>
+              <i class="fa fa-paper-plane"></i>
+              <i class="fa fa-snapchat"></i>
+            </ul> -->
+          </div>
+        </div>
       <div class="comments-list"></div>
       </div>
       <div class="google_translate"></div>

@@ -77,7 +77,7 @@ publishButton.addEventListener('click', () => {
     formData.append('content', writingArea.innerHTML);
 
     if (!formData.get('thumbnail') || !formData.get('heading') || !formData.get('category') || !formData.get('content')) {
-      alert('Please fill in all fields before publishing.');
+      showPopup('Please fill in all fields before publishing.');
       return; 
     } else {
       fetch('/publish/', {
@@ -94,4 +94,78 @@ publishButton.addEventListener('click', () => {
       });
     }
   }
+  else{
+    showPopup('Please fill in all fields before publishing.');
+  }
 });
+function showPopup(message) {
+  const popup = document.createElement('div');
+  popup.classList.add('popup');
+
+  const popupContent = document.createElement('div');
+  popupContent.classList.add('popup-content');
+
+  const popupMessage = document.createElement('p');
+  popupMessage.textContent = message;
+
+  const closeButton = document.createElement('span');
+  closeButton.classList.add('close-button');
+  closeButton.innerHTML = '&times;';
+  closeButton.addEventListener('click', () => {
+    popup.remove();
+  });
+
+  popupContent.appendChild(popupMessage);
+  popupContent.appendChild(closeButton);
+  popup.appendChild(popupContent);
+  document.body.appendChild(popup);
+
+  // Add some styles
+  const style = document.createElement('style');
+  style.innerHTML = `
+    .popup {
+      position: fixed;
+      z-index: 9999;
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 100%;
+      overflow: auto;
+      background-color: rgba(0, 0, 0, 0.6);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .popup-content {
+      background-color: #fff;
+      border-radius: 8px;
+      padding: 32px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+      max-width: 600px;
+      text-align: center;
+      position: relative;
+    }
+
+    .close-button {
+      position: absolute;
+      top: 8px;
+      right: 12px;
+      color: #aaa;
+      font-size: 24px;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    .close-button:hover {
+      color: #333;
+    }
+
+    p {
+      margin: 0;
+      font-size: 18px;
+      line-height: 1.5;
+    }
+  `;
+  document.head.appendChild(style);
+}

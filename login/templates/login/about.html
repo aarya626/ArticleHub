@@ -1,0 +1,128 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ArticleHub - About Us</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap');
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            line-height: 1.6;
+            margin: 0;
+            padding: 0;
+            background-color: #f7f7f7;
+        }
+
+
+        main {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #fff;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        section {
+            margin-bottom: 40px;
+            padding: 20px;
+            border-radius: 5px;
+            box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+        }
+
+        h1,
+        h2 {
+            color: #333;
+            text-align: center;
+        }
+
+        h2 {
+            position: relative;
+            padding-bottom: 10px;
+            margin-bottom: 20px;
+        }
+
+        h2::after {
+            content: "";
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 80px;
+            height: 3px;
+            background-color: #555;
+        }
+
+        ul {
+            list-style-type: none;
+            padding: 0;
+        }
+
+        li {
+            margin-bottom: 10px;
+        }
+
+        li i {
+            color: #555;
+            margin-right: 10px;
+        }
+
+        footer {
+            background-color: #333;
+            color: #fff;
+            padding: 20px;
+            text-align: center;
+        }
+    </style>
+</head>
+
+<body>
+
+    <main>
+        <h1>About Us</h1>
+
+        <section>
+            <h2>Our Story</h2>
+            <p>ArticleHub was founded in 2018 with a mission to provide high-quality, informative, and engaging content
+                to readers around the world. We believe that knowledge is power, and our goal is to empower individuals
+                by sharing valuable insights and perspectives on a wide range of topics.</p>
+        </section>
+
+        <section>
+            <h2>Our Team</h2>
+            <p>Our team consists of passionate writers, editors, and subject matter experts who are dedicated to
+                delivering exceptional content. We have a rigorous vetting process to ensure that our contributors are
+                knowledgeable, experienced, and capable of producing well-researched and accurate articles.</p>
+        </section>
+
+        <section>
+            <h2>Our Values</h2>
+            <ul>
+                <li><i class="fas fa-check"></i> Integrity: We value honesty, transparency, and ethical practices in all
+                    aspects of our operations.</li>
+                <li><i class="fas fa-check"></i> Quality: We are committed to producing high-quality content that meets
+                    the highest standards of accuracy, relevance, and readability.</li>
+                <li><i class="fas fa-check"></i> Diversity: We embrace diverse perspectives and strive to provide a
+                    platform for a wide range of voices and viewpoints.</li>
+                <li><i class="fas fa-check"></i> Continuous Improvement: We are dedicated to continuously improving our
+                    content and services to better serve our readers.</li>
+            </ul>
+        </section>
+
+        <section>
+            <h2>Join Us</h2>
+            <p>If you're passionate about writing and want to contribute to our growing community of readers, we welcome
+                you to join us as a contributor. Please visit our <a href="{% url 'signup' %}">SignUp</a> page.</p>
+        </section>
+    </main>
+
+    <footer>
+        <p>&copy; 2024 ArticleHub. All rights reserved.</p>
+    </footer>
+</body>
+
+</html>

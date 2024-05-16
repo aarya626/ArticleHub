@@ -52,8 +52,6 @@
     <link href="https://fonts.googleapis.com/css2?family=Source+Code+Pro:ital,wght@0,200..900;1,200..900&display=swap"
         rel="stylesheet">
 
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link
         href="https://fonts.googleapis.com/css2?family=Italiana&family=Source+Code+Pro:ital,wght@0,200..900;1,200..900&display=swap"
         rel="stylesheet">
@@ -62,36 +60,55 @@
 <body>
     <header class="navBar">
         <a id="Art-hub" title="Arthro">ArticleHub</a>
-
-        <div class="search-bar">
-            <input id="search" type="search" placeholder="Search To Read...">
-            <div id="search-icon">
-                <i class="fa fa-search"></i>
-            </div>
-
-        </div>
+        <div class="search-container">
+            <form action="{% url 'search_result' %}" method="GET">
+              <div class="search-box">
+                <input id="search" type="search" name="search" placeholder="Search To Read..." required>
+                <button type="submit"><i class="fa fa-search"></i></button>
+              </div>
+            </form>
+          </div>
 
         <ul class=" nav-elements">
 
             <li id="home">
                 <div id="home-bg">
 
-                    <a style="text-decoration: none; color: #070F2B;" id="home-text" href="{%url 'home' %}"> Home </a>
+                    <a style="text-decoration: none; color: #070F2B;" id="home-text" href="{%url 'home' %}"> <i class="fa fa-home"></i>Home </a>
                 </div>
 
             </li>
 
             <li id="menu">
-                <a id="menu-button" onclick="showMenu()">Menu</a>
+                <a id="menu-button" onclick="showMenu()"><i class="fa fa-bars"></i>Menu</a>
             </li>
+            {%if user.is_publisher == 1%}
+            <li id="article_writing">
+                <img id="article_writing_icon_home" src="{% static 'images/publish.png'%}" alt="Write your Article" height="18px" width="18px" title="Write Your Article"> <a href="{% url 'publish' %}">Write Article</a>
+              </li>
+              {%endif%}
             {%if user.is_authenticated%}
             <div id="dropdwn">
                 <button id="dropdwn-bttn"><i class="fa fa-user"></i>{{user.first_name}} {{user.last_name}}</button>
                 <div id="dropdwn-container">
                     <div id="dropdwn-items-div">
-                        <a id="dropdwn-content" href="{% url 'profile' user.username %}"> Profile</a>
-                        <a id="dropdwn-content" href=""> Settings</a>
-                        <a id="dropdwn-content" href=""> Logout</a>
+                        <a id="dropdwn-content" href="{% url 'profile' user.username %}"> <ion-icon name="person-outline"></ion-icon>Profile</a>
+                        <!-- {%if user.is_publisher == 1%}
+                        <a id="dropdwn-content" href="{% url 'publish'  %}"> Publish your article</a>
+                        {%endif%} -->
+                        <div id="settings-dropdwn">
+                            <a id="dropdwn-content" style="cursor: pointer;"><ion-icon name="cog-outline"></ion-icon>Settings</a>
+                            <div id="settings-dropdwn-container">
+                                <div id="settings-dropdwn-items-div">
+                                    <a id="dropdwn-content" href="{% url 'deleteaccount' %}">Delete your account</a>
+                                    <a id="dropdwn-content" href="{% url 'changepassword' %}">Change your password</a>
+                                    <a id="dropdwn-content" href="{% url 'about' %}">About Us</a>
+                                    <a id="dropdwn-content" href="{% url 'privacy' %}">Privacy & Security</a>
+                                    <!-- Add more settings links as needed -->
+                                </div>
+                            </div>
+                        </div>
+                        <a id="dropdwn-content" onclick="userLogout()" style="cursor: pointer;"><ion-icon name="log-out-outline"></ion-icon>Log Out</a>
                     </div>
 
                 </div>
@@ -99,7 +116,7 @@
             {% else %}
             <li id="signup">
                 <a id="signup-link" href="{% url 'login' %}">LogIn</a>
-            </li> &nbsp; &nbsp; &nbsp;
+            </li> 
             <li id="signup">
                 <a id="signup-link" href="{% url 'signup' %}">SignUp</a>
             </li>
@@ -123,12 +140,13 @@
             {% for article in articles %}
             <div class="popular-cards-slide-conatiner">
                 <a href="{% url 'articlepage' article.article_id %}" target="_blank">
-                    <!-- <h1>{{article.bookmarked}}</h1> -->
                     <div id="popular-article-1" class="relative">
                         <div id="article-thumbnail" style="background-image: url({{article.thumbnail}});"
                             class="relative">
+                            {%if user.is_authenticated %}
                             <div class="bookmark-container">
-                                <button id="bookmark-btn" class="bookmark-btn{{article.article_id}}" onclick="bookmarkArticle(event,{{ article.article_id }})">
+                                <button id="bookmark-btn" class="bookmark-btn{{article.article_id}}"
+                                    onclick="bookmarkArticle(event,{{article.article_id}})">
                                     {%if article.bookmarked %}
                                     <i class="fa fa-bookmark bookmark-icon bookmarked"></i>
                                     {%else%}
@@ -136,13 +154,14 @@
                                     {%endif%}
                                 </button>
                             </div>
+                            {%endif%}
                         </div>
                         <ul id="article-text">
                             <li id="cat-name">{{article.Category.category}}</li>
                             <li id="article-head">{{article.title}}</li>
                             <div id="authorName-and-like">
                                 <li id="authors-name">{{article.user.first_name}} {{article.user.last_name}}</li>
-                                <i id="like" class="fa fa-thumbs-up">{{article.num_likes}}</i>
+                                {{article.num_likes}} Likes</i>
                             </div>
                         </ul>
                     </div>
@@ -152,6 +171,54 @@
         </div>
     </div>
 
+    <div class="psycho-category">
+        <div id="psycho-head-more">
+            <h4 id="psycho-category-head">Your Following</h4>
+            <a href="" id="view-more-psycho">View more</a>
+        </div>
+
+        <div id="line-break"></div>
+
+        <div id="psycho-articles">
+            <div class="popular-cards-container" id="popular-cards-container"
+                style="padding-left: 0px;margin-left: -22px;">
+                {% for article in following_articles %}
+                <div class="popular-cards-slide-conatiner" data-category="{{ article.Category.category_id }}">
+                    <a href="{% url 'articlepage' article.article_id %}" target="_blank">
+                        <div id="popular-article-1">
+                            <div id="article-thumbnail" style="background-image: url({{article.thumbnail}});"
+                                class="relative">
+                                {%if user.is_authenticated %}
+                                <div class="bookmark-container">
+                                    <button id="bookmark-btn" class="bookmark-btn{{article.article_id}}"
+                                        onclick="bookmarkArticle(event,{{article.article_id}})">
+                                        {%if article.bookmarked %}
+                                        <i class="fa fa-bookmark bookmark-icon bookmarked"></i>
+                                        {%else%}
+                                        <i class="fa fa-bookmark bookmark-icon"></i>
+                                        {%endif%}
+                                    </button>
+                                </div>
+                                {%endif%}
+                            </div>
+                            <ul id="article-text">
+                                <li id="cat-name">{{ article.Category.category }}</li>
+                                <li id="article-head">{{ article.title }}</li>
+                                <div id="authorName-and-like">
+                                    <li id="authors-name">{{ article.user.first_name }} {{ article.user.last_name }}
+                                    </li>{{article.num_likes}} Likes
+
+                                </div>
+                            </ul>
+                        </div>
+                    </a>
+                </div>
+                {% endfor %}
+            </div>
+
+        </div>
+
+    </div>
     <div class="tech-category">
         <div id="tech-head-more">
             <select id="category-select">
@@ -168,19 +235,34 @@
         <div id="tech-articles">
 
 
-            <div class="popular-cards-container" id="popular-cards-container">
-                {% for article in articles %}
+            <div class="popular-cards-container" id="popular-cards-container" style="padding-top: 30px;">
+                {% for article in categories_articles %}
                 <div class="popular-cards-slide-conatiner categories"
                     data-category="{{ article.Category.category_id }}">
                     <a href="{% url 'articlepage' article.article_id %}" target="_blank">
                         <div id="popular-article-1">
-                            <div id="article-thumbnail" style="background-image: url({{article.thumbnail}});"></div>
+                            <div id="article-thumbnail" style="background-image: url({{article.thumbnail}});"
+                                class="relative">
+                                {%if user.is_authenticated %}
+                                <div class="bookmark-container">
+                                    <button id="bookmark-btn" class="bookmark-btn{{article.article_id}}"
+                                        onclick="bookmarkArticle(event,{{article.article_id}})">
+                                        {%if article.bookmarked %}
+                                        <i class="fa fa-bookmark bookmark-icon bookmarked"></i>
+                                        {%else%}
+                                        <i class="fa fa-bookmark bookmark-icon"></i>
+                                        {%endif%}
+                                    </button>
+                                </div>
+                                {%endif%}
+                            </div>
                             <ul id="article-text">
                                 <li id="cat-name">{{ article.Category.category }}</li>
                                 <li id="article-head">{{ article.title }}</li>
                                 <div id="authorName-and-like">
                                     <li id="authors-name">{{ article.user.first_name }} {{ article.user.last_name }}
-                                    </li> <i id="like" class="fa fa-thumbs-up"></i>
+                                    </li>{{article.num_likes}} Likes
+
                                 </div>
                             </ul>
                         </div>
@@ -194,76 +276,6 @@
 
     </div>
 
-    <div class="psycho-category">
-        <div id="psycho-head-more">
-            <h4 id="psycho-category-head"> Psychology <i id="drop-icon" class="fa fa-caret-down"></i></h4>
-            <a href="" id="view-more-psycho">View more</a>
-        </div>
-
-        <div id="line-break"></div>
-
-        <div id="psycho-articles">
-
-            <div id="popular-article-1">
-                <div id="article-thumbnail"></div>
-                <ul id="article-text">
-                    <li id="cat-name">Category name</li>
-                    <li id="article-head">Lorem ipsum, dolor sit amet consectetur adipisicing elit.</li>
-                    <div id="authorName-and-like">
-                        <li id="authors-name">Authors's Name</li> <i id="like" class="fa fa-thumbs-up">1k</i>
-                    </div>
-
-                </ul>
-            </div>
-            <div id="popular-article-1">
-                <div id="article-thumbnail"></div>
-                <ul id="article-text">
-                    <li id="cat-name">Category name</li>
-                    <li id="article-head">Lorem ipsum, dolor sit amet consectetur adipisicing elit.</li>
-                    <div id="authorName-and-like">
-                        <li id="authors-name">Authors's Name</li> <i id="like" class="fa fa-thumbs-up">1k</i>
-                    </div>
-
-                </ul>
-            </div>
-            <div id="popular-article-1">
-                <div id="article-thumbnail"></div>
-                <ul id="article-text">
-                    <li id="cat-name">Category name</li>
-                    <li id="article-head">Lorem ipsum, dolor sit amet consectetur adipisicing elit.</li>
-                    <div id="authorName-and-like">
-                        <li id="authors-name">Authors's Name</li> <i id="like" class="fa fa-thumbs-up">1k</i>
-                    </div>
-
-                </ul>
-            </div>
-            <div id="popular-article-1">
-                <div id="article-thumbnail"></div>
-                <ul id="article-text">
-                    <li id="cat-name">Category name</li>
-                    <li id="article-head">Lorem ipsum, dolor sit amet consectetur adipisicing elit.</li>
-                    <div id="authorName-and-like">
-                        <li id="authors-name">Authors's Name</li> <i id="like" class="fa fa-thumbs-up">1k</i>
-                    </div>
-
-                </ul>
-            </div>
-            <div id="popular-article-1">
-                <div id="article-thumbnail"></div>
-                <ul id="article-text">
-                    <li id="cat-name">Category name</li>
-                    <li id="article-head">Lorem ipsum, dolor sit amet consectetur adipisicing elit.</li>
-                    <div id="authorName-and-like">
-                        <li id="authors-name">Authors's Name</li> <i id="like" class="fa fa-thumbs-up">1k</i>
-                    </div>
-
-                </ul>
-            </div>
-
-
-        </div>
-
-    </div>
 
     <div class="footer">
         <div id="thank-text">Thanks For Visiting!</div>
@@ -271,10 +283,10 @@
             <div id="category-contents">
                 <h5 id="categories-heading">Categories</h5>
                 <ul id="categoeries-content-div">
-                    <li id="categories"> <a id="categories" href="">Science-Fiction</a> </li>
-                    <li id="categories"> <a id="categories" href="">Gaming</a> </li>
-                    <li id="categories"> <a id="categories" href="">Entertainment</a> </li>
-                    <li id="categories"> <a id="categories" href="">Wildlife</a> </li>
+                    <li id="categories"> <a id="categories" href="{% url 'categories_show' 'Fashion' %}">Fashion</a> </li>
+                    <li id="categories"> <a id="categories" href="{% url 'categories_show' 'Food' %}">Food</a> </li>
+                    <li id="categories"> <a id="categories" href="{% url 'categories_show' 'Sport' %}">Sports</a> </li>
+                    <li id="categories"> <a id="categories" href="{% url 'categories_show' 'Tourism' %}">Tourism</a> </li>
                 </ul>
             </div>
 
@@ -286,7 +298,8 @@
                 <ul id="contact-content-div">
                     <li id="contact-symbol"> <a id="contact-symbol" href=""> <i class="fa fa-instagram"></i> </a> </li>
                     <li id="contact-symbol"> <a id="contact-symbol" href=""> <i class="fa fa-facebook"></i> </a> </li>
-                    <li id="contact-symbol"> <a id="contact-symbol" href=""> <i class="fa fa-twitter"></i> </a> </li>
+                    <li id="contact-symbol"> <a id="contact-symbol" href=""> <i class="fa fa-twitter"></i></a>
+                    </li>
                     <li id="contact-symbol"> <a id="contact-symbol" href=""> <i class="fa fa-envelope"></i> </a> </li>
                 </ul>
             </div>
@@ -300,12 +313,12 @@
         <div id="menu-categories">
             <ul id="written-categories">
 
-                <li><a id="main-categories" href="">Culture</a></li>
-                <li><a id="main-categories" href="">Psychology</a></li>
-                <li><a id="main-categories" href="">Health</a></li>
-                <li><a id="main-categories" href="">Entertainment</a></li>
-                <li><a id="main-categories" href="">Politics</a></li>
-                <li><a id="main-categories" href="">Technology</a></li>
+                <li><a id="main-categories" href="{% url 'categories_show' 'Art' %}">Art & Culture</a></li>
+                <li><a id="main-categories" href="{% url 'categories_show' 'Business' %}">Business</a></li>
+                <li><a id="main-categories" href="{% url 'categories_show' 'Health' %}">Health</a></li>
+                <li><a id="main-categories" href="{% url 'categories_show' 'Environment' %}">Environment</a></li>
+                <li><a id="main-categories" href="{% url 'categories_show' 'Education' %}">Education</a></li>
+                <li><a id="main-categories" href="{% url 'categories_show' 'Technology' %}">Technology</a></li>
 
             </ul>
 
@@ -322,6 +335,19 @@
         </div>
 
     </div>
+
+    <div id="logoutModal" class="modal">
+        <div class="modal-content">
+          <span class="close">&times;</span>
+          <h2>Confirmation</h2>
+          <p>Are you sure you want to log out?</p>
+          <div class="buttons">
+            <button id="logoutConfirm"><ion-icon name="log-out-outline"></ion-icon>Log Out</button>
+            <button id="logoutCancel">Cancel</button>
+          </div>
+        </div>
+      </div>
+    <script src="https://unpkg.com/ionicons@5.0.0/dist/ionicons.js"></script>
     <script src="{%static 'js/indexScript.js' %}"></script>
 </body>
 

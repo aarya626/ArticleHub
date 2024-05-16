@@ -108,7 +108,7 @@ profilePicInput.addEventListener('change', () => {
         reader.addEventListener('load', () => {
             profilePicPreview.src = reader.result;
             profilePicPreview.style.display = 'block';
-            profilePicLabel.textContent = `${file.name} uploaded`;
+            profilePicLabel.textContent = 'uploaded';
         });
 
         reader.readAsDataURL(file);
@@ -200,7 +200,6 @@ signupbtn.addEventListener('click',()=>{
             break;
         }
     }
-    console.log(firstname,lastname,username,email,password,bio,profilePic,isPublisher);
     const formdata = new FormData();
     formdata.append('first',firstname);
     formdata.append('last',lastname);
