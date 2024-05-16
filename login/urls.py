@@ -14,4 +14,5 @@ urlpatterns = [
     path("changeyourpassword/",views.change_password,name="changepassword"),
     path("articleCategoriesPage/<str:category>/",views.categories_show,name="categories_show"),
     path("search/",views.search_result,name="search_result"),
+    path("forgotpassword/",views.forgot_password,name="forgotpassword"),
 ]

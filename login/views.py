@@ -372,3 +372,21 @@ def search_result(request):
         'search_query': search_query
     }
     return render(request, 'login/searchpage.html', context)
+
+
+def forgot_password(request):
+    if request.method == 'POST':
+        user = request.POST.get('oldpassword')
+        newpassword = request.POST.get('password')
+        # print(user,password)
+        user_db = Users.objects.get(username=user)
+        if user_db:
+            newpassword = make_password(newpassword)
+            user_db.password = newpassword
+            user_db.save()
+            login(request, user_db)
+            return JsonResponse({'success': 'Password changed successfully'})
+        else:
+            return JsonResponse({'Error': 'error'})
+
+    return render(request, 'login/forgotpassword.html')
