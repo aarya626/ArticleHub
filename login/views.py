@@ -38,7 +38,7 @@ def home(request):
         followed_users_profiles = user_profile.user.following.all()
         followed_users = [profile.user for profile in followed_users_profiles]
         following_articles = Articles.objects.filter(
-            user__in=followed_users).annotate(num_likes=Count('likes'))
+            user__in=followed_users).annotate(num_likes=Count('likes')).order_by('-created_at')
         context['following_articles'] = following_articles
     if request.method == 'POST':
         if request.headers.get('X-action') == 'logout':
@@ -320,17 +320,40 @@ def change_password(request):
 
 
 def categories_show(request, category):
-    category_id = Categories.objects.get(category=category).category_id
-    articles = Articles.objects.select_related(
-        'Category', 'user').filter(Category=category_id).all().annotate(num_likes=Count('likes')).order_by('-created_at')
-    for article in articles:
-        article.bookmarked = article.bookmark_by.filter(
-            pk=request.user.pk).exists()
-    context = {
-        'articles': articles,
-        'name': category
-    }
-    return render(request, "login/articleCategoriesPage.html", context)
+    if category == 'following':
+        user_profile, _ = UserProfile.objects.get_or_create(user=request.user)
+        followed_users_profiles = user_profile.user.following.all()
+        followed_users = [profile.user for profile in followed_users_profiles]
+        following_articles = Articles.objects.filter(
+            user__in=followed_users).annotate(num_likes=Count('likes'))
+        context = {
+            'following_articles': following_articles,
+            'category': category
+        }
+        return render(request, "login/articleCategoriesPage.html", context)
+    elif category == 'all':
+        articles = Articles.objects.select_related(
+            'Category', 'user').all().annotate(num_likes=Count('likes')).order_by('-created_at')
+        for article in articles:
+            article.bookmarked = article.bookmark_by.filter(
+                pk=request.user.pk).exists()
+        context = {
+            'articles': articles,
+            'name': 'All'
+        }
+        return render(request, "login/articleCategoriesPage.html", context)
+    else:
+        category_id = Categories.objects.get(category=category).category_id
+        articles = Articles.objects.select_related(
+            'Category', 'user').filter(Category=category_id).all().annotate(num_likes=Count('likes')).order_by('-created_at')
+        for article in articles:
+            article.bookmarked = article.bookmark_by.filter(
+                pk=request.user.pk).exists()
+        context = {
+            'articles': articles,
+            'name': category
+        }
+        return render(request, "login/articleCategoriesPage.html", context)
 
 
 def search_result(request):

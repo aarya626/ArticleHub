@@ -12,12 +12,49 @@
 
 <body>
     <div class="article-category-heading">
+        {% if category == 'following'%}
+        <h3>Your Following</h3>
+        {%else%}
         <h3>Category: {{name}}</h3>
+        {%endif%}
     </div>
 
     <div class="article-category-container">
         
         {% for article in articles %}
+        <div class="popular-cards-slide-conatiner categories"
+            data-category="{{ article.Category.category_id }}">
+            <a href="{% url 'articlepage' article.article_id %}" target="_blank">
+                <div id="popular-article-1">
+                    <div id="article-thumbnail" style="background-image: url({{article.thumbnail}});"
+                        class="relative">
+                        {%if user.is_authenticated %}
+                        <div class="bookmark-container">
+                            <button id="bookmark-btn" class="bookmark-btn{{article.article_id}}"
+                                onclick="bookmarkArticle(event,{{article.article_id}})">
+                                {%if article.bookmarked %}
+                                <i class="fa fa-bookmark bookmark-icon bookmarked"></i>
+                                {%else%}
+                                <i class="fa fa-bookmark bookmark-icon"></i>
+                                {%endif%}
+                            </button>
+                        </div>
+                        {%endif%}
+                    </div>
+                    <ul id="article-text">
+                        <li id="cat-name">{{ article.Category.category }}</li>
+                        <li id="article-head">{{ article.title }}</li>
+                        <div id="authorName-and-like">
+                            <li id="authors-name">{{ article.user.first_name }} {{ article.user.last_name }}
+                            </li>{{article.num_likes}} Likes
+
+                        </div>
+                    </ul>
+                </div>
+            </a>
+        </div>
+        {% endfor %}
+        {% for article in following_articles %}
         <div class="popular-cards-slide-conatiner categories"
             data-category="{{ article.Category.category_id }}">
             <a href="{% url 'articlepage' article.article_id %}" target="_blank">

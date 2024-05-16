@@ -276,7 +276,7 @@ body {
 }
 
 .input-user-text::placeholder {
-  color: #aaa;
+  color: black;
 }
 
 .input-user-text:focus {

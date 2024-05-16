@@ -174,7 +174,7 @@
     <div class="psycho-category">
         <div id="psycho-head-more">
             <h4 id="psycho-category-head">Your Following</h4>
-            <a href="" id="view-more-psycho">View more</a>
+            <a href="{% url 'categories_show' 'following' %}" id="view-more-psycho">View more</a>
         </div>
 
         <div id="line-break"></div>
@@ -228,7 +228,7 @@
                 {% endfor %}
             </select>
             <!-- <h4 id="tech-category-head">Technology <i id="drop-icon" class="fa fa-caret-down"></i></h4> -->
-            <a href="" id="view-more-tech">View more</a>
+            <a href="{% url 'categories_show' 'all'  %}" id="view-more-tech">View more</a>
         </div>
 
         <!-- <div id="line-break"></div> -->
