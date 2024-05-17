@@ -1027,6 +1027,8 @@ header.navBar {
   position: relative;
   width: 500px;
   max-width: 90%;
+  display: flex;
+  align-items: center;
 }
 
 .search-box input {
@@ -1036,19 +1038,20 @@ header.navBar {
   border-radius: 25px;
   padding: 0 25px;
   font-size: 16px;
-  background-color: rgba(255, 255, 255, 0.2);
-  color: #fff;
+  background-color: rgba(255, 255, 255, 0.936);
+  color: #3d3d3d;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
   transition: background-color 0.3s ease;
+  margin-right: 5px;
 }
 
 .search-box input:focus {
-  background-color: rgba(255, 255, 255, 0.3);
+  background-color: rgba(255, 255, 255, 0.397);
   outline: none;
 }
 
 .search-box input::placeholder {
-  color: white;
+  color: rgba(255, 255, 255, 0.565);
 }
 
 .search-box button {
@@ -1056,12 +1059,14 @@ header.navBar {
   top: 50%;
   right: 15px;
   transform: translateY(-50%);
-  background-color: transparent;
+  /* border-radius: 0 8px 8px 0; */
   border: none;
-  color: #fff;
+  background-color: transparent;
+  color: #1e1e1e;
   font-size: 20px;
   cursor: pointer;
   transition: color 0.3s ease;
+  
 }
 
 .search-box button:hover {

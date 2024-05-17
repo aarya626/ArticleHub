@@ -1,5 +1,4 @@
 function selectProfilePic() {
-  // Trigger click event on the hidden file input
   document.getElementById('profile-pic-input').click();
   document.getElementById('profile-pic-input').addEventListener('change', function (event) {
     const file = event.target.files[0]; // Get the selected file
@@ -13,7 +12,6 @@ function selectProfilePic() {
 
     };
 
-    // Read the selected file as a data URL
     reader.readAsDataURL(file);
     const formdata = new FormData();
     formdata.append('pfp', file);
@@ -42,11 +40,9 @@ tabLinks.forEach(link => {
   link.addEventListener('click', e => {
     e.preventDefault();
 
-    // Remove active class from all tabs and contents
     tabLinks.forEach(link => link.classList.remove('active'));
     tabContents.forEach(content => content.classList.remove('active'));
 
-    // Add active class to clicked tab and corresponding content
     const targetTab = e.currentTarget.dataset.tab;
     e.currentTarget.classList.add('active');
     document.getElementById(targetTab).classList.add('active');
@@ -70,20 +66,14 @@ if (followBtn) {
       .then(data => {
         console.log(data.isFollowing);
         if (!data.isFollowing) {
-          // Unfollow action
           followBtn.textContent = 'Follow';
           followBtn.classList.remove('following');
-          // Update the followers/following count (if needed)
-          // ...
           document.querySelector('.follow').textContent = data.followers;
           document.querySelector('.following').textContent = data.following;
 
         } else {
-          // Follow action
           followBtn.textContent = 'Unfollow';
           followBtn.classList.add('following');
-          // Update the followers/following count (if needed)
-          // ...
           document.querySelector('.follow').textContent = data.followers;
           document.querySelector('.following').textContent = data.following;
         }
@@ -100,7 +90,6 @@ function deletearticle(event, article_id) {
 
   const card = document.querySelector(`[data-article="${article_id}"]`);
 
-  // Create a custom confirm pop-up
   const confirmModal = document.createElement('div');
   confirmModal.classList.add('confirm-modal');
   confirmModal.innerHTML = `
@@ -120,7 +109,6 @@ function deletearticle(event, article_id) {
   const cancelDeleteBtn = document.getElementById('cancelDeleteBtn');
 
   confirmDeleteBtn.addEventListener('click', () => {
-    // Proceed with deletion
     card.parentNode.removeChild(card);
 
     const formdata = new FormData();
@@ -149,9 +137,7 @@ function deletearticle(event, article_id) {
   });
 }
 
-// Function to handle form submission
 function handleFormSubmission() {
-  // event.preventDefault(); // Prevent default form submission
   const username = document.getElementById('profileusername').textContent;
 
   // Collect form data
@@ -166,7 +152,6 @@ function handleFormSubmission() {
   // Remove empty fields from form data
   Object.keys(formData).forEach(key => formData[key] === '' && delete formData[key]);
   // console.log('dfdfdf');
-  // Send data to Django using fetch API
   fetch(`/profile/${username}/`, {
     method: 'POST',
     headers: {
@@ -193,7 +178,6 @@ function addsocialmedia(name) {
   let popupWindow = null;
   popupWindow = document.querySelector('.instagram-popup-window-link');
   // console.log('dsgdhgv');
-  // Determine the icon HTML based on the input name
   if (name === 'Instagram') {
     socialmedia_name = 'instasocial';
     iconHTML = '<i class="fa fa-instagram"></i>Instagram';
@@ -225,20 +209,15 @@ function addLink() {
   const link = document.getElementById('inputsocial').value;
   const icon = document.getElementById(`${socialmedia_name}`);
 
-  // Regular expression to validate Instagram URL format
   const instagramRegex = /^https?:\/\/(?:www\.)?instagram\.com\/([a-zA-Z0-9_]+)/;
   const facebookRegex = /^https?:\/\/(?:www\.)?facebook\.com\/([a-zA-Z0-9_]+)/;
   const twitterRegex = /^https?:\/\/(?:www\.)?twitter\.com\/([a-zA-Z0-9_]+)/;
   const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
   if(socialmedia_name == 'instasocial'){
   if (instagramRegex.test(link)) {
-    // Display the icon
     icon.style.display = 'block';
-    // Set the link
     icon.href = link;
-    // Hide the error message if previously shown
     document.getElementById('error-message').style.display = 'none';
-    // Hide the popup window
     const popupWindow = document.querySelector('.instagram-popup-window-link');
     popupWindow.style.visibility = 'hidden';
     updatelinks(link);
@@ -251,13 +230,9 @@ function addLink() {
   }
   else if(socialmedia_name == 'fb'){
     if (facebookRegex.test(link)) {
-      // Display the icon
       icon.style.display = 'block';
-      // Set the link
       icon.href = link;
-      // Hide the error message if previously shown
       document.getElementById('error-message').style.display = 'none';
-      // Hide the popup window
       const popupWindow = document.querySelector('.instagram-popup-window-link');
       popupWindow.style.visibility = 'hidden';
       updatelinks(link);
@@ -270,13 +245,9 @@ function addLink() {
     }
     else if(socialmedia_name == 'twittersocial'){
       if (twitterRegex.test(link)) {
-        // Display the icon
         icon.style.display = 'block';
-        // Set the link
         icon.href = link;
-        // Hide the error message if previously shown
         document.getElementById('error-message').style.display = 'none';
-        // Hide the popup window
         const popupWindow = document.querySelector('.instagram-popup-window-link');
         popupWindow.style.visibility = 'hidden';
         updatelinks(link);
@@ -289,14 +260,10 @@ function addLink() {
       }
       else if(socialmedia_name == 'mail'){
         if (emailRegex.test(link)) {
-          // Display the icon
           icon.style.display = 'block';
-          // Set the link
           
         icon.href = link;
-        // Hide the error message if previously shown
         document.getElementById('error-message').style.display = 'none';
-        // Hide the popup window
         const popupWindow = document.querySelector('.instagram-popup-window-link');
         popupWindow.style.visibility = 'hidden';
         updatelinks(link);

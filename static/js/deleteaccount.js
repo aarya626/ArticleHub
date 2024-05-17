@@ -6,11 +6,9 @@ deleteAccountForm.addEventListener('submit', handleDeleteAccount);
 function handleDeleteAccount(event) {
     event.preventDefault();
     errorMessageDiv.textContent = '';
-    // Get the password value from the form
     const password = document.getElementById('password').value;
     const formdata = new FormData();
     formdata.append('password',password);
-    // Send a fetch request to the server to delete the user account
     // console.log(password);
     fetch('/deleteyouraccount/',{
         method:'POST',
