@@ -57,16 +57,17 @@
         <div class="share-div-background">
           <div class="share-div">
             <div class="copy-url-div">
-              <input id="url-field" type="url" value="https://www.articlehub.com/articlepage/{{article.article_id}}" placeholder="link" readonly>
+              <input id="url-field" type="url" value="articlehub.pythonanywhere.com/articlepage/{{article.article_id}}" placeholder="link" readonly>
               <button id="copy-url-btn" style="cursor: pointer;">Copy URL <i class="fa fa-copy"></i></button>
             </div>
-            <!-- <ul id="social-media-share">
+            <ul id="social-media-share">
               <i class="fa fa-instagram"></i>
               <i class="fa fa-facebook"></i>
               <i class="fa fa-twitter"></i>
+              <button class="button" data-sharer="twitter" data-title="Checkout Sharer.js!" data-hashtags="awesome, sharer.js" data-url="https://ellisonleao.github.io/sharer.js/">Share on Twitter</button>
               <i class="fa fa-paper-plane"></i>
               <i class="fa fa-snapchat"></i>
-            </ul> -->
+            </ul>
           </div>
         </div>
       <div class="comments-list"></div>
@@ -100,6 +101,7 @@
   <!-- <footer>
 <p>&copy; 2024 Article Website. All rights reserved.</p>
 </footer> -->
+<script src="https://cdn.jsdelivr.net/npm/sharer.js@latest/sharer.min.js"></script>
   <script src="http://translate.google.com/translate_a/element.js?cb=googleTranslator"></script>
   <script src="{% static 'js/articlepage.js'%}"></script>
 </body>
