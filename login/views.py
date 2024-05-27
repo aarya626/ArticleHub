@@ -121,7 +121,6 @@ def profile_view(request, username):
         user_id=profile_user.user_id).annotate(num_likes=Count('likes'))
     social_user, _ = SocialMedia.objects.get_or_create(
         user_id=profile_user.user_id)
-    print(user.user_id)
     context = {
         'profile_user': profile_user,
         'user': user,

@@ -67,8 +67,8 @@ DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
         'NAME': 'articlehub',
-        'USER': 'debian-sys-maint',
-        'PASSWORD': 'QW2IWIpNJhG63TOI',
+        'USER': 'root',
+        'PASSWORD': '',
         'HOST': 'localhost',
         'PORT': '3306',
         
