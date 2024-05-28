@@ -109,90 +109,94 @@ def signup_view(request):
 
 def profile_view(request, username):
     user = request.user
-    profile_user = Users.objects.get(username=username)
-    profile_followers, _ = UserProfile.objects.get_or_create(user=profile_user)
-    isfollowing = profile_followers.followers.filter(pk=user.user_id).exists()
-    bookmarked_articles = Articles.objects.filter(
-        bookmark_by=profile_user.user_id).annotate(num_likes=Count('likes'))
-    for article in bookmarked_articles:
-        article.bookmarked = article.bookmark_by.filter(
-            pk=request.user.pk).exists()
-    published_articles = Articles.objects.filter(
-        user_id=profile_user.user_id).annotate(num_likes=Count('likes'))
-    social_user, _ = SocialMedia.objects.get_or_create(
-        user_id=profile_user.user_id)
-    context = {
-        'profile_user': profile_user,
-        'user': user,
-        'followers': profile_followers.followers.count(),
-        'following': profile_followers.user.following.count(),
-        'isfollowing': isfollowing,
-        'bookmarked_articles': bookmarked_articles,
-        'published_articles': published_articles,
-        'social_user': social_user
-    }
-    if request.method == 'POST':
-        action = request.headers.get('X-action')
-        # print(action)
-        if action == 'deletearticle':
-            article_id = request.POST.get('articleId')
-            # print(article_id)
-            article = Articles.objects.get(article_id=article_id)
-            # print(article)
-            article.delete()
-            return JsonResponse({'success': 'success'})
-        elif action == 'updatepfp':
-            image = request.FILES['pfp']
-            profile = default_storage.save(
-                'static/images/profile_pics/' + image.name, image)
-            profile = '/' + profile
-            # print(profile)
-            userpfp = Users.objects.get(username=request.user)
-            userpfp.profile = profile
-            userpfp.save()
-            return JsonResponse({'success': 'success'})
-        elif action == 'updateprofile':
-            # print('bsbjfbsfhbbfebdkj')
-            data = json.loads(request.body)
+    if user.is_authenticated:
 
-            user = Users.objects.get(username=request.user)
-            if 'firstname' in data:
-                user.firstname = data['firstname']
-            if 'lastname' in data:
-                user.lastname = data['lastname']
-            if 'bio' in data:
-                user.bio = data['bio']
-            if 'username' in data:
-                user.username = data['username']
-            if 'email' in data:
-                user.email = data['email']
+        profile_user = Users.objects.get(username=username)
+        profile_followers, _ = UserProfile.objects.get_or_create(user=profile_user)
+        isfollowing = profile_followers.followers.filter(pk=user.user_id).exists()
+        bookmarked_articles = Articles.objects.filter(
+            bookmark_by=profile_user.user_id).annotate(num_likes=Count('likes'))
+        for article in bookmarked_articles:
+            article.bookmarked = article.bookmark_by.filter(
+                pk=request.user.pk).exists()
+        published_articles = Articles.objects.filter(
+            user_id=profile_user.user_id).annotate(num_likes=Count('likes'))
+        social_user, _ = SocialMedia.objects.get_or_create(
+            user_id=profile_user.user_id)
+        context = {
+            'profile_user': profile_user,
+            'user': user,
+            'followers': profile_followers.followers.count(),
+            'following': profile_followers.user.following.count(),
+            'isfollowing': isfollowing,
+            'bookmarked_articles': bookmarked_articles,
+            'published_articles': published_articles,
+            'social_user': social_user
+        }
+        if request.method == 'POST':
+            action = request.headers.get('X-action')
+            # print(action)
+            if action == 'deletearticle':
+                article_id = request.POST.get('articleId')
+                # print(article_id)
+                article = Articles.objects.get(article_id=article_id)
+                # print(article)
+                article.delete()
+                return JsonResponse({'success': 'success'})
+            elif action == 'updatepfp':
+                image = request.FILES['pfp']
+                profile = default_storage.save(
+                    'static/images/profile_pics/' + image.name, image)
+                profile = '/' + profile
+                # print(profile)
+                userpfp = Users.objects.get(username=request.user)
+                userpfp.profile = profile
+                userpfp.save()
+                return JsonResponse({'success': 'success'})
+            elif action == 'updateprofile':
+                # print('bsbjfbsfhbbfebdkj')
+                data = json.loads(request.body)
 
-            user.save()
+                user = Users.objects.get(username=request.user)
+                if 'firstname' in data:
+                    user.firstname = data['firstname']
+                if 'lastname' in data:
+                    user.lastname = data['lastname']
+                if 'bio' in data:
+                    user.bio = data['bio']
+                if 'username' in data:
+                    user.username = data['username']
+                if 'email' in data:
+                    user.email = data['email']
 
-            return JsonResponse({'message': 'User details updated successfully'})
-        elif action == 'addlinks':
-            link = request.POST.get('link')
-            name = request.POST.get('socialmedia_name')
-            user, _ = SocialMedia.objects.get_or_create(user=request.user)
-            if name == 'fb':
-                user.facebook = link
-            if name == 'instasocial':
-                user.instagram = link
-            if name == 'twittersocial':
-                user.twitter = link
-            if name == 'mail':
-                user.email = link
-            user.save()
-            return JsonResponse({'success': 'success'})
-        elif action == 'follow':
-            if profile_followers.followers.filter(pk=user.user_id).exists():
-                profile_followers.followers.remove(user)
-                isFollowing = False
-            else:
-                profile_followers.followers.add(user)
-                isFollowing = True
+                user.save()
 
-            return JsonResponse({'isFollowing': isFollowing, 'followers': profile_followers.followers.count(), 'following': profile_followers.user.following.count(), })
+                return JsonResponse({'message': 'User details updated successfully'})
+            elif action == 'addlinks':
+                link = request.POST.get('link')
+                name = request.POST.get('socialmedia_name')
+                user, _ = SocialMedia.objects.get_or_create(user=request.user)
+                if name == 'fb':
+                    user.facebook = link
+                if name == 'instasocial':
+                    user.instagram = link
+                if name == 'twittersocial':
+                    user.twitter = link
+                if name == 'mail':
+                    user.email = link
+                user.save()
+                return JsonResponse({'success': 'success'})
+            elif action == 'follow':
+                if profile_followers.followers.filter(pk=user.user_id).exists():
+                    profile_followers.followers.remove(user)
+                    isFollowing = False
+                else:
+                    profile_followers.followers.add(user)
+                    isFollowing = True
+
+                return JsonResponse({'isFollowing': isFollowing, 'followers': profile_followers.followers.count(), 'following': profile_followers.user.following.count(), })
+    else:
+        return redirect('login')
     return render(request, "login/Profile.html", context)
 
 
