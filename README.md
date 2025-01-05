@@ -78,6 +78,7 @@ We welcome contributions to ArticleHub! If you're interested in contributing:
 ## Getting Started
 
 1. Clone the repository:
+   
    ```bash
    git clone https://github.com/aarya626/ArticleHub.git
    ```
